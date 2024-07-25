@@ -1,18 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { listarClientes } from "../../api";
+import { listarClientes, removeCliente } from "../../api";
+import AtualizaCliente from "../../components/AtualizaCliente";
+import CriaCliente from "../../components/CriaCliente";
 
 const ClientesPage = () => {
   const navigate = useNavigate();
   const [clientes, setClientes] = useState([]);
+  const [clienteAtualizacao, setClienteAtualizacao] = useState("");
 
   const goHome = () => navigate("/");
 
   useEffect(() => {
-    (async () => {
-      setClientes((await listarClientes()).data);
-    })();
+    atualizaDadosPagina();
   }, []);
+
+  const atualizaDadosPagina = async () => {
+    setClientes((await listarClientes()).data);
+  };
+
+  const iniciaAtualizacaoCliente = (projeto) => {
+    setClienteAtualizacao(projeto);
+  };
+
+  const iniciaRemocaoCliente = async (projeto) => {
+    await removeCliente(projeto.id);
+    atualizaDadosPagina();
+  };
 
   return (
     <div>
@@ -22,8 +36,24 @@ const ClientesPage = () => {
         <div key={`cliente-${idx}`}>
           <p>{cliente.razaoSocial}</p>
           <span>{cliente.nomeFantasia}</span>
+          <button
+            type="button"
+            onClick={() => iniciaAtualizacaoCliente(cliente)}
+          >
+            Modificar
+          </button>
+          <button type="button" onClick={() => iniciaRemocaoCliente(cliente)}>
+            Deletar
+          </button>
         </div>
       ))}
+      <CriaCliente callbackClienteCriado={atualizaDadosPagina} />
+      {clienteAtualizacao && (
+        <AtualizaCliente
+          callbackClienteAtualizado={atualizaDadosPagina}
+          cliente={clienteAtualizacao}
+        />
+      )}
     </div>
   );
 };

@@ -1,18 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { listarProjetos } from "../../api";
+import { listarProjetos, removeProjeto } from "../../api";
+import AtualizaProjeto from "../../components/AtualizaProjeto";
+import CriaProjeto from "../../components/CriaProjeto";
 
 const ProjetosPage = () => {
   const navigate = useNavigate();
   const [projetos, setProjetos] = useState([]);
+  const [projetoAtualizacao, setProjetoAtualizacao] = useState("");
 
   const goHome = () => navigate("/");
 
   useEffect(() => {
-    (async () => {
-      setProjetos((await listarProjetos()).data);
-    })();
+    atualizaDadosPagina();
   }, []);
+
+  const atualizaDadosPagina = async () => {
+    setProjetos((await listarProjetos()).data);
+  };
+
+  const iniciaAtualizacaoProjeto = (projeto) => {
+    setProjetoAtualizacao(projeto);
+  };
+
+  const iniciaRemocaoProjeto = async (projeto) => {
+    await removeProjeto(projeto.id);
+    atualizaDadosPagina();
+  }
 
   return (
     <div>
@@ -22,8 +36,24 @@ const ProjetosPage = () => {
         <div key={`projeto-${idx}`}>
           <p>{projeto.nome}</p>
           <span>{projeto.descricao}</span>
+          <button
+            type="button"
+            onClick={() => iniciaAtualizacaoProjeto(projeto)}
+          >
+            Modificar
+          </button>
+          <button type="button" onClick={() => iniciaRemocaoProjeto(projeto)}>
+            Deletar
+          </button>
         </div>
       ))}
+      <CriaProjeto callbackProjetoCriado={atualizaDadosPagina} />
+      {projetoAtualizacao && (
+        <AtualizaProjeto
+          callbackProjetoAtualizado={atualizaDadosPagina}
+          projeto={projetoAtualizacao}
+        />
+      )}
     </div>
   );
 };
