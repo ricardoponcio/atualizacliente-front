@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./context/authContext";
 
 import ClientesPage from "./pages/private/ClientesPage";
+import ConsultaAtualizacao from "./pages/private/ConsultaAtualizacao";
 import HomePage from "./pages/private/HomePage";
 import ProjetosPage from "./pages/private/ProjetosPage";
 import ProtectedRoute from "./pages/private/ProtectedRoute";
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/clientes" element={<ClientesPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/atualizacao" element={<ConsultaAtualizacao />} />
       <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
   );
