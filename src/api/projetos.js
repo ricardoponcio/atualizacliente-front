@@ -1,17 +1,13 @@
-import api from "./api";
+import useApi from "./useApi";
 
-export const listarProjetos = () => {
-  return api.get("/projetos/listar");
-};
+export const useApiProjetos = () => {
+  const api = useApi();
 
-export const criaProjeto = (projeto) => {
-  return api.put("/projetos/criar", projeto);
-};
-
-export const atualizaProjeto = (id, projeto) => {
-  return api.patch(`/projetos/atualizar/${id}`, projeto);
-};
-
-export const removeProjeto = (id) => {
-  return api.delete(`/projetos/remover/${id}`);
+  return {
+    listarProjetos: () => api.get("/projetos/listar"),
+    criaProjeto: (projeto) => api.put("/projetos/criar", projeto),
+    atualizaProjeto: (id, projeto) =>
+      api.patch(`/projetos/atualizar/${id}`, projeto),
+    removeProjeto: (id) => api.delete(`/projetos/remover/${id}`),
+  };
 };

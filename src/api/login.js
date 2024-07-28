@@ -1,12 +1,11 @@
-import api from "./api";
+import useApi from "./useApi";
 
-export const login = (usuario, senha) => {
-  return api.post("/auth/login", {
-    email: usuario,
-    senha,
-  });
-};
+export const useApiAuth = () => {
+  const api = useApi(false);
 
-export const logout = () => {
-  return api.post("/auth/logout");
+  return {
+    login: (usuario, senha) =>
+      api.post("/auth/login", { email: usuario, senha }),
+    logout: () => api.post("/auth/logout"),
+  };
 };

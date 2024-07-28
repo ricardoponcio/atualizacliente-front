@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { atualizaProjeto } from "../api";
+import { useApiProjetos } from "../api";
 
 const AtualizaProjeto = ({ projeto, callbackProjetoAtualizado = () => {} }) => {
+  const { atualizaProjeto } = useApiProjetos();
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState(0);

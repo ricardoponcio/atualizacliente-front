@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { listarProjetos, removeProjeto } from "../../api";
+import { useApiProjetos } from "../../api";
 import AtualizaProjeto from "../../components/AtualizaProjeto";
 import CriaProjeto from "../../components/CriaProjeto";
 
 const ProjetosPage = () => {
   const navigate = useNavigate();
+  const { listarProjetos, removeProjeto } = useApiProjetos();
   const [projetos, setProjetos] = useState([]);
   const [projetoAtualizacao, setProjetoAtualizacao] = useState("");
 
@@ -26,7 +27,7 @@ const ProjetosPage = () => {
   const iniciaRemocaoProjeto = async (projeto) => {
     await removeProjeto(projeto.id);
     atualizaDadosPagina();
-  }
+  };
 
   return (
     <div>

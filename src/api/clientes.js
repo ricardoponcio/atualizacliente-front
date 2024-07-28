@@ -1,17 +1,13 @@
-import api from "./api";
+import useApi from "./useApi";
 
-export const listarClientes = () => {
-  return api.get("/clientes/listar");
-};
+export const useApiCliente = () => {
+  const api = useApi();
 
-export const criaCliente = (cliente) => {
-  return api.put("/clientes/criar", cliente);
-};
-
-export const atualizaCliente = (id, cliente) => {
-  return api.patch(`/clientes/atualizar/${id}`, cliente);
-};
-
-export const removeCliente = (id) => {
-  return api.delete(`/clientes/remover/${id}`);
+  return {
+    listarClientes: () => api.get("/clientes/listar"),
+    criaCliente: (cliente) => api.put("/clientes/criar", cliente),
+    atualizaCliente: (id, cliente) =>
+      api.patch(`/clientes/atualizar/${id}`, cliente),
+    removeCliente: (id) => api.delete(`/clientes/remover/${id}`),
+  };
 };

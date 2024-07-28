@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import { atualizaCliente } from "../api";
+import { useApiCliente } from "../api";
 
 const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
+  const { atualizaCliente } = useApiCliente();
   const [razaoSocial, setRazaoSocial] = useState("");
   const [nomeFantasia, setNomeFantasia] = useState("");
   const [cnpj, setCnpj] = useState("");
@@ -11,10 +12,10 @@ const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
 
   useEffect(() => {
     limparFormulario();
-    setRazaoSocial(cliente.razaoSocial || '');
-    setNomeFantasia(cliente.nomeFantasia || '');
-    setCnpj(cliente.cnpj || '');
-    setEmail(cliente.email || '');
+    setRazaoSocial(cliente.razaoSocial || "");
+    setNomeFantasia(cliente.nomeFantasia || "");
+    setCnpj(cliente.cnpj || "");
+    setEmail(cliente.email || "");
   }, []);
 
   const limparFormulario = () => {

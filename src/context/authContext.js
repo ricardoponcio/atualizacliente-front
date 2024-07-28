@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import Cookies from "js-cookie";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { login as loginRequest, logout as logoutRequest } from "../api";
+import { useApiAuth } from "../api";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
+  const { login: loginRequest, logout: logoutRequest } = useApiAuth();
 
   useEffect(() => {
     const loggedUser = Cookies.get("user");
