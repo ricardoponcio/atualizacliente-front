@@ -1,16 +1,13 @@
 import { useApiProjetos } from "api";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import AtualizaProjeto from "components/AtualizaProjeto";
 import CriaProjeto from "components/CriaProjeto";
+import ButtonGoBack from "components/form/ButtonGoBack";
+import React, { useEffect, useState } from "react";
 
 const ProjetosPage = () => {
-  const navigate = useNavigate();
   const { listarProjetos, removeProjeto } = useApiProjetos();
   const [projetos, setProjetos] = useState([]);
   const [projetoAtualizacao, setProjetoAtualizacao] = useState("");
-
-  const goHome = () => navigate("/");
 
   useEffect(() => {
     atualizaDadosPagina();
@@ -31,7 +28,7 @@ const ProjetosPage = () => {
 
   return (
     <div>
-      <button onClick={goHome}>Home</button>
+      <ButtonGoBack />
       <h1>Projetos</h1>
       {projetos?.map((projeto, idx) => (
         <div key={`projeto-${idx}`}>

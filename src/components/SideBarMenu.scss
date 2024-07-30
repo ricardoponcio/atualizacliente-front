@@ -1,0 +1,103 @@
+$sidebar-full-size: 300px;
+$sidebar-collapsed-size: 50px;
+$sidebar-hamburguer-size: 28px;
+$transition-time: 0.5s;
+
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: min($sidebar-full-size, 100%);
+    height: 100%;
+    z-index: 99;
+
+    background-color: aliceblue;
+
+    -webkit-transition: width $transition-time ease-in-out;
+    -moz-transition: width $transition-time ease-in-out;
+    -o-transition: width $transition-time ease-in-out;
+    transition: width $transition-time ease-in-out;
+
+    & .button-collapse {
+        position: absolute;
+        top: 20px;
+        left: calc($sidebar-full-size - ($sidebar-hamburguer-size / 2));
+        width: $sidebar-hamburguer-size;
+
+        -webkit-transition: left $transition-time ease-in-out;
+        -moz-transition: left $transition-time ease-in-out;
+        -o-transition: left $transition-time ease-in-out;
+        transition: left $transition-time ease-in-out;
+    }
+
+    & .hamburguer {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 6px;
+        border: solid 1px black;
+        border-radius: 50%;
+        background-color: white;
+
+        & .hamburguer-item {
+            border-bottom: solid 1px black;
+        }
+    }
+
+    &>* {
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    & .sidebar-container {
+        margin: 0;
+        margin-top: 64px;
+        padding: 8px;
+        padding-inline: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        & .sidebar-menus-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+
+            & .sidebar-menus-item {
+                & a {
+                    text-decoration: none;
+                    color: black;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+
+.sidebar.collapsed {
+    width: $sidebar-collapsed-size;
+
+    & .button-collapse {
+        left: calc($sidebar-collapsed-size - ($sidebar-hamburguer-size / 2));
+    }
+}
+
+.main {
+    position: absolute;
+    left: 300px;
+    width: calc(100% - 300px);
+    padding: 32px;
+
+    -webkit-transition: all $transition-time ease-in-out;
+    -moz-transition: all $transition-time ease-in-out;
+    -o-transition: all $transition-time ease-in-out;
+    transition: all $transition-time ease-in-out;
+}
+
+.sidebar.collapsed~.main {
+    left: 50px;
+    width: calc(100% - 50px);
+}

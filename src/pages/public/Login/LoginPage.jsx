@@ -1,7 +1,9 @@
-import "./Login.scss";
+import Button from "components/form/Button";
+import Input from "components/form/Input";
+import { useAuth } from "context/authContext"; // Assuming you've already created this context
 import React, { useState } from "react";
 import { Navigate, redirect } from "react-router-dom";
-import { useAuth } from "context/authContext"; // Assuming you've already created this context
+import "./Login.scss";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -27,19 +29,19 @@ const LoginPage = () => {
     <div className="login-wrapper">
       <div className="login-container">
         <h1>Atualiza Cliente</h1>
-        <input
-          type="email"
+        <Input
+          type="text"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={setEmail}
         />
-        <input
+        <Input
           type="password"
           placeholder="Senha"
           value={senha}
-          onChange={(e) => setSenha(e.target.value)}
+          onChange={setSenha}
         />
-        <button onClick={handleLogin}>Entrar</button>
+        <Button onClick={handleLogin} value={"Entrar"} />
       </div>
     </div>
   );

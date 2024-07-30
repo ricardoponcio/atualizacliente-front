@@ -17,7 +17,7 @@ const useApi = (withInterceptor = true) => {
       return response;
     },
     function (error) {
-      if (401 === error.response.status) {
+      if (401 === error.response?.status) {
         logout();
       } else {
         throw error;

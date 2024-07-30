@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useApiCliente } from "api";
 import AtualizaCliente from "components/AtualizaCliente";
 import CriaCliente from "components/CriaCliente";
+import ButtonGoBack from "components/form/ButtonGoBack";
 
 const ClientesPage = () => {
-  const navigate = useNavigate();
   const { listarClientes, removeCliente } = useApiCliente();
   const [clientes, setClientes] = useState([]);
   const [clienteAtualizacao, setClienteAtualizacao] = useState("");
-
-  const goHome = () => navigate("/");
 
   useEffect(() => {
     atualizaDadosPagina();
@@ -31,7 +28,7 @@ const ClientesPage = () => {
 
   return (
     <div>
-      <button onClick={goHome}>Home</button>
+      <ButtonGoBack />
       <h1>Clientes</h1>
       {clientes?.map((cliente, idx) => (
         <div key={`cliente-${idx}`}>
