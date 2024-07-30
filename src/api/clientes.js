@@ -9,5 +9,7 @@ export const useApiCliente = () => {
     atualizaCliente: (id, cliente) =>
       api.patch(`/clientes/atualizar/${id}`, cliente),
     removeCliente: (id) => api.delete(`/clientes/remover/${id}`),
+    validarCliente: (token, senhaCliente) =>
+      api.post(`/clientes/validar/${token}`, { senhaCliente }),
   };
 };

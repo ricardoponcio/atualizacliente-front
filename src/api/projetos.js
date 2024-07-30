@@ -10,6 +10,9 @@ export const useApiProjetos = () => {
       api.patch(`/projetos/atualizar/${id}`, projeto),
     removeProjeto: (id) => api.delete(`/projetos/remover/${id}`),
     listaAtualizacoes: (id) => api.get(`/projetos/listar/${id}/atualizacoes`),
-    buscaAtualizacaoToken: (token) => api.get(`/projetos/listar/${token}/atualizacoes/token`),
+    buscaAtualizacaoToken: (token, senhaCliente) =>
+      api.post(`/projetos/listar/${token}/atualizacoes/token`, {
+        senhaCliente,
+      }),
   };
 };
