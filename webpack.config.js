@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
 module.exports = {
   mode: "development",
@@ -40,10 +41,27 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader",
+        ],
+      },
     ],
   },
   resolve: {
     extensions: ["", ".js", ".jsx"],
+    alias: {
+      api: path.resolve(__dirname, "./src/api"),
+      components: path.resolve(__dirname, "./src/components"),
+      context: path.resolve(__dirname, "./src/context"),
+      utils: path.resolve(__dirname, "./src/utils"),
+    },
   },
   plugins: [
     new HtmlWebPackPlugin({
@@ -53,5 +71,5 @@ module.exports = {
   ],
   devServer: {
     historyApiFallback: true,
-  }
+  },
 };

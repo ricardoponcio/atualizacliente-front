@@ -1,8 +1,8 @@
+import { useApiProjetos } from "api";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useApiProjetos } from "../../api";
-import AtualizaProjeto from "../../components/AtualizaProjeto";
-import CriaProjeto from "../../components/CriaProjeto";
+import AtualizaProjeto from "components/AtualizaProjeto";
+import CriaProjeto from "components/CriaProjeto";
 
 const ProjetosPage = () => {
   const navigate = useNavigate();

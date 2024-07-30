@@ -1,8 +1,7 @@
-// src/pages/LoginPage.jsx
-
+import "./Login.scss";
 import React, { useState } from "react";
 import { Navigate, redirect } from "react-router-dom";
-import { useAuth } from "../../context/authContext"; // Assuming you've already created this context
+import { useAuth } from "context/authContext"; // Assuming you've already created this context
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -25,21 +24,23 @@ const LoginPage = () => {
   }
 
   return (
-    <div>
-      <h1>Login Page</h1>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Senha"
-        value={senha}
-        onChange={(e) => setSenha(e.target.value)}
-      />
-      <button onClick={handleLogin}>Entrar</button>
+    <div className="login-wrapper">
+      <div className="login-container">
+        <h1>Atualiza Cliente</h1>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Senha"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+        />
+        <button onClick={handleLogin}>Entrar</button>
+      </div>
     </div>
   );
 };

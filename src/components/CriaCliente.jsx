@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import { useApiCliente } from "../api";
+import { useApiCliente } from "api";
 
 const CriaCliente = ({ callbackClienteCriado = () => {} }) => {
   const { criaCliente } = useApiCliente();

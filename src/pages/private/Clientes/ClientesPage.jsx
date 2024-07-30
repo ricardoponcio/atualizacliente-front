@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useApiCliente } from "../../api";
-import AtualizaCliente from "../../components/AtualizaCliente";
-import CriaCliente from "../../components/CriaCliente";
+import { useApiCliente } from "api";
+import AtualizaCliente from "components/AtualizaCliente";
+import CriaCliente from "components/CriaCliente";
 
 const ClientesPage = () => {
   const navigate = useNavigate();

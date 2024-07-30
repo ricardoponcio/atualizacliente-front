@@ -1,14 +1,15 @@
 import React from "react";
+import './App.scss';
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./context/authContext";
 
-import ConsultaAtualizacao from "./pages/ConsultaAtualizacao";
-import ClientesPage from "./pages/private/ClientesPage";
-import HomePage from "./pages/private/HomePage";
-import ProjetosPage from "./pages/private/ProjetosPage";
+import ConsultaAtualizacao from "./pages/public/ConsultaAtualizacao/ConsultaAtualizacaoPage";
+import ClientesPage from "./pages/private/Clientes/ClientesPage";
+import HomePage from "./pages/private/Home/HomePage";
+import ProjetosPage from "./pages/private/Projeto/ProjetosPage";
 import ProtectedRoute from "./pages/private/ProtectedRoute";
-import LoginPage from "./pages/public/LoginPage";
-import ValidaCliente from "./pages/ValidaCliente";
+import LoginPage from "./pages/public/Login/LoginPage";
+import ValidaCliente from "./pages/public/ValidaCliente/ValidaClientePage";
 
 const App = () => {
   const { user: usuario } = useAuth();

@@ -1,43 +1,46 @@
 import React, { useState } from "react";
-import { useApiCliente } from "../api";
+import { useApiProjetos } from "api";
 
-const ValidaCliente = () => {
-  const { validarCliente } = useApiCliente();
+const ConsultaAtualizacao = () => {
+  const { buscaAtualizacaoToken } = useApiProjetos();
   const [token, setToken] = useState("");
   const [senhaCliente, setSenhaCliente] = useState("");
+  const [atualizacao, setAtualizacao] = useState("");
   const [requisicaoErro, setRequisicaoErro] = useState();
 
-  const validar = async (event) => {
+  const buscaAtualizacao = async (event) => {
     try {
       event.preventDefault();
-      await validarCliente(token, senhaCliente);
+      setAtualizacao((await buscaAtualizacaoToken(token, senhaCliente)).data);
       setRequisicaoErro(undefined);
     } catch (err) {
+      setAtualizacao("");
       setRequisicaoErro(err.response?.data?.mensagem || err.message);
     }
   };
 
   return (
     <div>
-      <h1>Validar Cliente</h1>
-      <form onSubmit={validar}>
+      <h1>Busca por Token</h1>
+      <form onSubmit={buscaAtualizacao}>
         <input
           type="text"
-          placeholder="Token Validação"
+          placeholder="Token Pesquisa"
           value={token}
           onChange={(e) => setToken(e.target.value)}
         />
         <input
           type="password"
-          placeholder="Nova Senha do cliente"
+          placeholder="Senha do cliente"
           value={senhaCliente}
           onChange={(e) => setSenhaCliente(e.target.value)}
         />
         <button type="submit">Buscar</button>
       </form>
       {requisicaoErro && <span>{requisicaoErro}</span>}
+      {atualizacao && JSON.stringify(atualizacao)}
     </div>
   );
 };
 
-export default ValidaCliente;
+export default ConsultaAtualizacao;
