@@ -1,44 +1,58 @@
-import React, { useState } from "react";
 import { useApiProjetos } from "api";
+import Form from "components/form/Form";
+import Input from "components/form/Input";
+import Loader from "components/form/Loader";
+import React, { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import "./ConsultaAtualizacao.scss";
 
 const ConsultaAtualizacao = () => {
+  const [searchParams] = useSearchParams();
   const { buscaAtualizacaoToken } = useApiProjetos();
   const [token, setToken] = useState("");
   const [senhaCliente, setSenhaCliente] = useState("");
   const [atualizacao, setAtualizacao] = useState("");
   const [requisicaoErro, setRequisicaoErro] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setToken(searchParams.get("__token_visualizacao_atualizacao"));
+  }, []);
 
   const buscaAtualizacao = async (event) => {
+    setIsLoading(true);
+    setRequisicaoErro("");
     try {
       event.preventDefault();
       setAtualizacao((await buscaAtualizacaoToken(token, senhaCliente)).data);
       setRequisicaoErro(undefined);
     } catch (err) {
       setAtualizacao("");
-      setRequisicaoErro(err.response?.data?.mensagem || err.message);
+      setRequisicaoErro(
+        err.response?.data?.mensagem ||
+          "Erro ao consultar atualização, tente novamente mais tarde."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div>
-      <h1>Busca por Token</h1>
-      <form onSubmit={buscaAtualizacao}>
-        <input
-          type="text"
-          placeholder="Token Pesquisa"
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Senha do cliente"
-          value={senhaCliente}
-          onChange={(e) => setSenhaCliente(e.target.value)}
-        />
-        <button type="submit">Buscar</button>
-      </form>
-      {requisicaoErro && <span>{requisicaoErro}</span>}
-      {atualizacao && JSON.stringify(atualizacao)}
+    <div className="consulta-atualizacao-wrapper">
+      <div className="consulta-atualizacao-content">
+        <h1>Busca por Token</h1>
+        <Form submitText="Consultar" onSubmit={buscaAtualizacao}>
+          <Input
+            type="password"
+            placeholder="Senha do cliente"
+            value={senhaCliente}
+            onChange={setSenhaCliente}
+          />
+          {isLoading && <Loader center={true} />}
+          {requisicaoErro && <span>{requisicaoErro}</span>}
+        </Form>
+        {atualizacao && JSON.stringify(atualizacao)}
+      </div>
     </div>
   );
 };

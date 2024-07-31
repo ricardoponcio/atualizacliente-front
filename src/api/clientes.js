@@ -2,6 +2,7 @@ import useApi from "./useApi";
 
 export const useApiCliente = () => {
   const api = useApi();
+  const apiWithoutInterceptor = useApi(false);
 
   return {
     listarClientes: () => api.get("/clientes/listar"),
@@ -9,7 +10,9 @@ export const useApiCliente = () => {
     atualizaCliente: (id, cliente) =>
       api.patch(`/clientes/atualizar/${id}`, cliente),
     removeCliente: (id) => api.delete(`/clientes/remover/${id}`),
-    validarCliente: (token, senhaCliente)   =>
-      api.post(`/clientes/validar/${token}`, { senhaCliente }),
+    validarCliente: (token, senhaCliente) =>
+      apiWithoutInterceptor.post(`/clientes/validar/${token}`, {
+        senhaCliente,
+      }),
   };
 };

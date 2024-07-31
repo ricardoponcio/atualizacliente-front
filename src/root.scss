@@ -1,0 +1,19 @@
+body,
+#root {
+    width: 100dvw;
+    height: 100dvh;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+}
+
+// div[data-lastpass-icon-root] {
+//     display: none !important;
+// }
+
+*, *:before, *:after {
+    font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}

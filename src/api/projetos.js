@@ -2,6 +2,7 @@ import useApi from "./useApi";
 
 export const useApiProjetos = () => {
   const api = useApi();
+  const apiWithoutInterceptor = useApi(false);
 
   return {
     listarProjetos: () => api.get("/projetos/listar"),
@@ -11,8 +12,11 @@ export const useApiProjetos = () => {
     removeProjeto: (id) => api.delete(`/projetos/remover/${id}`),
     listaAtualizacoes: (id) => api.get(`/projetos/listar/${id}/atualizacoes`),
     buscaAtualizacaoToken: (token, senhaCliente) =>
-      api.post(`/projetos/listar/${token}/atualizacoes/token`, {
-        senhaCliente,
-      }),
+      apiWithoutInterceptor.post(
+        `/projetos/listar/${token}/atualizacoes/token`,
+        {
+          senhaCliente,
+        }
+      ),
   };
 };
