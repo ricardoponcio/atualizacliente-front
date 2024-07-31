@@ -2,9 +2,9 @@
 import React from "react";
 import "./Button.scss";
 
-const Button = ({ value, onClick = () => {} }) => {
+const Button = ({ type = "button", value, onClick = () => {} }) => {
   return (
-    <button className="my-custom-button" onClick={onClick}>
+    <button type={type} className="my-custom-button" onClick={onClick}>
       {value}
     </button>
   );

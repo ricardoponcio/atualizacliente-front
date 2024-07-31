@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
+import { useApiCliente, useApiProjetos } from "api";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { useApiCliente, useApiProjetos } from "api";
+import Form from "./form/Form";
+import Input from "./form/Input";
+import Select from "./form/Select";
 
 const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
   const { criaProjeto } = useApiProjetos();
@@ -40,56 +43,45 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
         dataLimite: moment(dataLimite).utc().format(),
         clienteId: clientes[cliente].id,
       });
+      limparFormulario();
       callbackProjetoCriado(projetoCriado.data);
     } catch (err) {
       console.error(err);
     } finally {
       setCarregando(false);
     }
-    limparFormulario();
   };
 
   return (
-    <form onSubmit={onSubmitForm}>
-      <input
-        type="text"
-        placeholder="Nome"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-      />
-      <input
+    <Form submitText="Criar" onSubmit={onSubmitForm}>
+      <Input type="text" placeholder="Nome" value={nome} onChange={setNome} />
+      <Input
         type="text"
         placeholder="Descrição"
         value={descricao}
-        onChange={(e) => setDescricao(e.target.value)}
+        onChange={setDescricao}
       />
-      <input
+      <Input
         type="number"
         placeholder="Valor (R$)"
         value={valor}
-        onChange={(e) => setValor(e.target.value)}
+        onChange={setValor}
       />
-      <input
+      <Input
         type="date"
         placeholder="Data Limite"
         value={dataLimite}
-        onChange={(e) => setDataLimite(e.target.value)}
+        onChange={setDataLimite}
       />
-      <select
-        name="clientes"
+      <Select
         value={cliente}
-        onChange={(e) => setCliente(e.target.value)}
-      >
-        <option key={`cliente-null`}></option>
-        {clientes.map((cliente, idx) => (
-          <option key={`cliente-${idx}`} value={idx}>
-            {cliente.razaoSocial}
-          </option>
-        ))}
-      </select>
-      <button type="submit">Criar</button>
+        onChange={setCliente}
+        options={clientes}
+        selectOptionLabelFactory={(cliente) => cliente.razaoSocial}
+        selectOptionValueFactory={(_, idx) => idx}
+      />
       {carregando && <span>Carregando...</span>}
-    </form>
+    </Form>
   );
 };
 

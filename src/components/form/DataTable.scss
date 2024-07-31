@@ -3,7 +3,7 @@
     text-align: center;
 
     & .my-custom-table-thead {
-        background-color: lightcyan;
+        background-color: aliceblue;
 
         & .my-cystom-table-header-row {
 
@@ -26,7 +26,7 @@
         }
 
         & .my-custom-table-row:nth-child(even) {
-            background-color: lightcyan;
+            background-color: aliceblue;
         }
 
     }

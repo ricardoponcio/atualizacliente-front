@@ -5,35 +5,55 @@ import Button from "components/form/Button";
 import ButtonGoBack from "components/form/ButtonGoBack";
 import DataTable from "components/form/DataTable";
 import Drawer from "components/form/Drawer";
+import Popup from "components/form/Popup";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 
 const ProjetosPage = () => {
-  const { listarProjetos, removeProjeto } = useApiProjetos();
+  const { listarProjetos, removeProjeto: removerProjetoRequest } =
+    useApiProjetos();
   const [projetos, setProjetos] = useState([]);
   const [projetoAtualizacao, setProjetoAtualizacao] = useState("");
+  const [projetoRemover, setProjetoRemover] = useState("");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     atualizaDadosPagina();
   }, []);
 
-  const fechaDrawer = () => setIsDrawerOpen(false);
   const abreDrawer = () => setIsDrawerOpen(true);
+  const fechaDrawer = () => setIsDrawerOpen(false);
+
+  const abrePopup = () => setIsPopupOpen(true);
+  const fechaPopup = () => setIsPopupOpen(false);
 
   const atualizaDadosPagina = async () => {
+    setIsLoading(true);
     setProjetos((await listarProjetos()).data);
+    setIsLoading(false);
   };
 
   const iniciaAtualizacaoProjeto = (projeto) => {
     setProjetoAtualizacao(projeto);
-    setIsDrawerOpen(true);
+    abreDrawer();
   };
 
   const iniciaRemocaoProjeto = async (projeto) => {
-    console.log(projeto);
-    await removeProjeto(projeto.id);
-    atualizaDadosPagina();
+    setProjetoRemover(projeto);
+    abrePopup();
+  };
+
+  const removeProjeto = async () => {
+    setIsLoading(true);
+    try {
+      await removerProjetoRequest(projetoRemover.id);
+      atualizaDadosPagina();
+    } catch (err) {
+      //nothing
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -68,8 +88,13 @@ const ProjetosPage = () => {
           },
         ]}
       />
+      {isLoading && <span>Carregando...</span>}
 
-      <Drawer isVisible={isDrawerOpen} onClose={fechaDrawer}>
+      <Drawer
+        customTitle="Criar Novo Projeto"
+        isVisible={isDrawerOpen}
+        onClose={fechaDrawer}
+      >
         {!projetoAtualizacao && (
           <CriaProjeto
             callbackProjetoCriado={() => {
@@ -88,6 +113,24 @@ const ProjetosPage = () => {
           />
         )}
       </Drawer>
+
+      <Popup
+        isVisible={isPopupOpen}
+        customTitle="Tem certeza?"
+        onClose={fechaPopup}
+        options={[
+          {
+            value: "Sim",
+            onClick: () => removeProjeto(projetoRemover),
+          },
+          {
+            value: "Não",
+            onClick: () => {},
+          },
+        ]}
+      >
+        <span>Tem certeza que deseja remover este projeto?</span>
+      </Popup>
     </div>
   );
 };

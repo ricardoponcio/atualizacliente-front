@@ -3,7 +3,12 @@ import React from "react";
 import Button from "./Button";
 import "./Drawer.scss";
 
-const Drawer = ({ children, isVisible = false, onClose = () => {} }) => {
+const Drawer = ({
+  children,
+  customTitle = "",
+  isVisible = false,
+  onClose = () => {},
+}) => {
   return (
     isVisible && (
       <div className="drawer-wrapper">
@@ -12,7 +17,10 @@ const Drawer = ({ children, isVisible = false, onClose = () => {} }) => {
           <div className="drawer-container-go-back">
             <Button value={"Fechar"} onClick={onClose} />
           </div>
-          <div className="drawer-container-content">{children}</div>
+          <div className="drawer-container-content">
+            {customTitle && <h1>{customTitle}</h1>}
+            {children}
+          </div>
         </div>
       </div>
     )

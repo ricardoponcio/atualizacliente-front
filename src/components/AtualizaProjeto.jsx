@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
+import { useApiProjetos } from "api";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { useApiProjetos } from "api";
+import Form from "./form/Form";
+import Input from "./form/Input";
 
 const AtualizaProjeto = ({ projeto, callbackProjetoAtualizado = () => {} }) => {
   const { atualizaProjeto } = useApiProjetos();
@@ -13,10 +15,10 @@ const AtualizaProjeto = ({ projeto, callbackProjetoAtualizado = () => {} }) => {
 
   useEffect(() => {
     limparFormulario();
-    setNome(projeto.nome || '');
-    setDescricao(projeto.descricao || '');
-    setValor(projeto.valor || '');
-    setDataLimite(projeto.dataLimite || '');
+    setNome(projeto.nome || "");
+    setDescricao(projeto.descricao || "");
+    setValor(projeto.valor || "");
+    setDataLimite(projeto.dataLimite || "");
   }, []);
 
   const limparFormulario = () => {
@@ -46,34 +48,28 @@ const AtualizaProjeto = ({ projeto, callbackProjetoAtualizado = () => {} }) => {
   };
 
   return (
-    <form onSubmit={onSubmitForm}>
-      <input
-        type="text"
-        placeholder="Nome"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-      />
-      <input
+    <Form submitText="Atualizar" onSubmit={onSubmitForm}>
+      <Input type="text" placeholder="Nome" value={nome} onChange={setNome} />
+      <Input
         type="text"
         placeholder="Descrição"
         value={descricao}
-        onChange={(e) => setDescricao(e.target.value)}
+        onChange={setDescricao}
       />
-      <input
+      <Input
         type="number"
         placeholder="Valor (R$)"
         value={valor}
-        onChange={(e) => setValor(e.target.value)}
+        onChange={setValor}
       />
-      <input
+      <Input
         type="date"
         placeholder="Data Limite"
         value={dataLimite}
-        onChange={(e) => setDataLimite(e.target.value)}
+        onChange={setDataLimite}
       />
-      <button type="submit">Atualizar</button>
       {carregando && <span>Carregando...</span>}
-    </form>
+    </Form>
   );
 };
 
