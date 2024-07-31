@@ -6,6 +6,7 @@ import ButtonGoBack from "components/form/ButtonGoBack";
 import DataTable from "components/form/DataTable";
 import Drawer from "components/form/Drawer";
 import Popup from "components/form/Popup";
+import Spacer from "components/Spacer";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 
@@ -61,6 +62,7 @@ const ProjetosPage = () => {
       <ButtonGoBack />
       <h1>Projetos</h1>
       <Button value={"Novo"} onClick={abreDrawer} />
+      <Spacer height={16} />
       <DataTable
         headers={["Nome", "Decrição", "Valor (R$)", "Data Limite", "Cliente"]}
         columnsRenderNames={[

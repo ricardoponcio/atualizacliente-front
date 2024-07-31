@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
 import { useApiCliente } from "api";
+import React, { useEffect, useState } from "react";
+import Form from "./form/Form";
+import Input from "./form/Input";
 
 const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
   const { atualizaCliente } = useApiCliente();
@@ -9,6 +11,7 @@ const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
   const [cnpj, setCnpj] = useState("");
   const [email, setEmail] = useState("");
   const [carregando, setCarregando] = useState(false);
+  const [requisicaoErro, setRequisicaoErro] = useState("");
 
   useEffect(() => {
     limparFormulario();
@@ -28,6 +31,7 @@ const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
   const onSubmitForm = async (event) => {
     event.preventDefault();
     setCarregando(true);
+    setRequisicaoErro("");
     try {
       const clienteAtualizaco = await atualizaCliente(cliente.id, {
         razaoSocial,
@@ -36,43 +40,42 @@ const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
         email,
       });
       callbackClienteAtualizado(clienteAtualizaco.data);
+      limparFormulario();
     } catch (err) {
-      console.error(err);
+      setRequisicaoErro(
+        err.response?.data?.mensagem || "Erro ao atualizar cliente"
+      );
     } finally {
       setCarregando(false);
     }
-    limparFormulario();
   };
 
   return (
-    <form onSubmit={onSubmitForm}>
-      <input
-        type="text"
-        placeholder="Razão Social"
-        value={razaoSocial}
-        onChange={(e) => setRazaoSocial(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Nome Fantasia"
-        value={nomeFantasia}
-        onChange={(e) => setNomeFantasia(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="CNPJ"
-        value={cnpj}
-        onChange={(e) => setCnpj(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button type="submit">Criar</button>
+    <>
+      <Form submitText="Atualizar" onSubmit={onSubmitForm}>
+        <Input
+          type="text"
+          placeholder="Razão Social"
+          value={razaoSocial}
+          onChange={setRazaoSocial}
+        />
+        <Input
+          type="text"
+          placeholder="Nome Fantasia"
+          value={nomeFantasia}
+          onChange={setNomeFantasia}
+        />
+        <Input type="text" placeholder="CNPJ" value={cnpj} onChange={setCnpj} />
+        <Input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={setEmail}
+        />
+      </Form>
       {carregando && <span>Carregando...</span>}
-    </form>
+      {requisicaoErro && <span>{requisicaoErro}</span>}
+    </>
   );
 };
 

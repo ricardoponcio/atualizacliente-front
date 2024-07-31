@@ -16,6 +16,7 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
   const [cliente, setCliente] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [clientes, setClientes] = useState([]);
+  const [requisicaoErro, setRequisicaoErro] = useState("");
 
   useEffect(() => {
     limparFormulario();
@@ -46,42 +47,45 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
       limparFormulario();
       callbackProjetoCriado(projetoCriado.data);
     } catch (err) {
-      console.error(err);
+      setRequisicaoErro(err.response?.data?.mensagem || "Erro ao crir projeto");
     } finally {
       setCarregando(false);
     }
   };
 
   return (
-    <Form submitText="Criar" onSubmit={onSubmitForm}>
-      <Input type="text" placeholder="Nome" value={nome} onChange={setNome} />
-      <Input
-        type="text"
-        placeholder="Descrição"
-        value={descricao}
-        onChange={setDescricao}
-      />
-      <Input
-        type="number"
-        placeholder="Valor (R$)"
-        value={valor}
-        onChange={setValor}
-      />
-      <Input
-        type="date"
-        placeholder="Data Limite"
-        value={dataLimite}
-        onChange={setDataLimite}
-      />
-      <Select
-        value={cliente}
-        onChange={setCliente}
-        options={clientes}
-        selectOptionLabelFactory={(cliente) => cliente.razaoSocial}
-        selectOptionValueFactory={(_, idx) => idx}
-      />
+    <>
+      <Form submitText="Criar" onSubmit={onSubmitForm}>
+        <Input type="text" placeholder="Nome" value={nome} onChange={setNome} />
+        <Input
+          type="text"
+          placeholder="Descrição"
+          value={descricao}
+          onChange={setDescricao}
+        />
+        <Input
+          type="number"
+          placeholder="Valor (R$)"
+          value={valor}
+          onChange={setValor}
+        />
+        <Input
+          type="date"
+          placeholder="Data Limite"
+          value={dataLimite}
+          onChange={setDataLimite}
+        />
+        <Select
+          value={cliente}
+          onChange={setCliente}
+          options={clientes}
+          selectOptionLabelFactory={(cliente) => cliente.razaoSocial}
+          selectOptionValueFactory={(_, idx) => idx}
+        />
+      </Form>
       {carregando && <span>Carregando...</span>}
-    </Form>
+      {requisicaoErro && <span>{requisicaoErro}</span>}
+    </>
   );
 };
 
