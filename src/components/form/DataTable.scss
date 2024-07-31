@@ -1,0 +1,33 @@
+.my-custom-table {
+    width: 100%;
+    text-align: center;
+
+    & .my-custom-table-thead {
+        background-color: lightcyan;
+
+        & .my-cystom-table-header-row {
+
+            & .my-custom-table-header-item {
+                padding: 16px;
+            }
+    
+        }
+        
+    }
+
+    & .my-custom-table-tbody {
+
+        & .my-custom-table-row {
+            
+            & .my-custom-table-cell {
+                padding: 8px;
+            }
+            
+        }
+
+        & .my-custom-table-row:nth-child(even) {
+            background-color: lightcyan;
+        }
+
+    }
+}
