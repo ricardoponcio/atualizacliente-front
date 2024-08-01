@@ -1,5 +1,7 @@
 import { useApiProjetos } from "api";
+import FlexList from "components/form/FlexList";
 import Form from "components/form/Form";
+import HtmlBox from "components/form/HtmlBox";
 import Input from "components/form/Input";
 import Loader from "components/form/Loader";
 import React, { useEffect, useState } from "react";
@@ -42,6 +44,10 @@ const ConsultaAtualizacao = () => {
       <div className="consulta-atualizacao-content">
         <h1>Busca por Token</h1>
         <Form submitText="Consultar" onSubmit={buscaAtualizacao}>
+          <FlexList labelValuePairs={true}>
+            <label>Token</label>
+            <Input value={token} disabled />
+          </FlexList>
           <Input
             type="password"
             placeholder="Senha do cliente"
@@ -51,8 +57,21 @@ const ConsultaAtualizacao = () => {
           {isLoading && <Loader center={true} />}
           {requisicaoErro && <span>{requisicaoErro}</span>}
         </Form>
-        {atualizacao && JSON.stringify(atualizacao)}
       </div>
+      {atualizacao && (
+        <div className="consulta-atualizacao-result">
+          <FlexList labelValuePairs={true}>
+            <label>Título</label>
+            <Input value={atualizacao.titulo} disabled />
+            <label>Status</label>
+            <Input value={atualizacao.status} disabled />
+            <label>Substatus</label>
+            <Input value={atualizacao.subStatus} disabled />
+            <label>Descrição</label>
+            <HtmlBox content={atualizacao.descricao} />
+          </FlexList>
+        </div>
+      )}
     </div>
   );
 };

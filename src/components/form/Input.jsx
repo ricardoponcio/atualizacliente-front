@@ -8,6 +8,7 @@ const Input = ({
   placeholder = "",
   onChange = () => {},
   onChangeField,
+  disabled,
 }) => {
   const onChangeInput = (event) => {
     onChange(event.target?.value);
@@ -20,6 +21,7 @@ const Input = ({
       value={value}
       onChange={onChangeField || onChangeInput}
       placeholder={placeholder}
+      disabled={disabled}
     />
   );
 };

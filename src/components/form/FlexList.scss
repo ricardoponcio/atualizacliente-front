@@ -1,0 +1,13 @@
+.my-custom-flex-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &>* {
+        width: 100%;
+    }
+}
+
+.my-custom-flex-list.label-value-pairs>*:nth-child(odd):not(:first-child) {
+    margin-top: 8px;
+}
