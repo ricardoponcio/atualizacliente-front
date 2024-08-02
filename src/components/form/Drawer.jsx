@@ -10,20 +10,18 @@ const Drawer = ({
   onClose = () => {},
 }) => {
   return (
-    isVisible && (
-      <div className="drawer-wrapper">
-        <div className="drawer-overlay" onClick={onClose}></div>
-        <div className="drawer-container right">
-          <div className="drawer-container-go-back">
-            <Button value={"Fechar"} onClick={onClose} />
-          </div>
-          <div className="drawer-container-content">
-            {customTitle && <h1>{customTitle}</h1>}
-            {children}
-          </div>
+    <div className={`drawer-wrapper ${isVisible ? '' : 'hidden'}`}>
+      <div className="drawer-overlay" onClick={onClose}></div>
+      <div className="drawer-container right">
+        <div className="drawer-container-go-back">
+          <Button value={"Fechar"} onClick={onClose} />
+        </div>
+        <div className="drawer-container-content">
+          {customTitle && <h1>{customTitle}</h1>}
+          {children}
         </div>
       </div>
-    )
+    </div>
   );
 };
 

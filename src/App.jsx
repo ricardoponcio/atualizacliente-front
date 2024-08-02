@@ -7,6 +7,8 @@ import moment from "moment";
 import ClientesPage from "./pages/private/Clientes/ClientesPage";
 import HomePage from "./pages/private/Home/HomePage";
 import ProjetosPage from "./pages/private/Projeto/ProjetosPage";
+import ProjetoAtualizacoesPage from "./pages/private/Projeto/ProjetoAtualizacoesPage";
+import NovaAtualizacaoPage from "./pages/private/Projeto/NovaAtualizacaoPage";
 import ProtectedRoute from "./pages/private/ProtectedRoute";
 import ConsultaAtualizacao from "./pages/public/ConsultaAtualizacao/ConsultaAtualizacaoPage";
 import LoginPage from "./pages/public/Login/LoginPage";
@@ -21,6 +23,8 @@ const App = () => {
       <Route element={<ProtectedRoute usuario={usuario} />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/projetos" element={<ProjetosPage />} />
+        <Route path="/projetos/atualizacoes" element={<ProjetoAtualizacoesPage />} />
+        <Route path="/projetos/atualizacoes/nova" element={<NovaAtualizacaoPage />} />
         <Route path="/clientes" element={<ClientesPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />

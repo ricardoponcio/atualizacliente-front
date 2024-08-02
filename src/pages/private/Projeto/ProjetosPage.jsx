@@ -9,8 +9,10 @@ import Popup from "components/form/Popup";
 import Spacer from "components/Spacer";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 const ProjetosPage = () => {
+  const navigate = useNavigate();
   const { listarProjetos, removeProjeto: removerProjetoRequest } =
     useApiProjetos();
   const [projetos, setProjetos] = useState([]);
@@ -19,6 +21,7 @@ const ProjetosPage = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [requisicaoErro, setRequisicaoErro] = useState("");
 
   useEffect(() => {
     atualizaDadosPagina();
@@ -32,8 +35,16 @@ const ProjetosPage = () => {
 
   const atualizaDadosPagina = async () => {
     setIsLoading(true);
-    setProjetos((await listarProjetos()).data);
-    setIsLoading(false);
+    setRequisicaoErro("");
+    try {
+      setProjetos((await listarProjetos()).data);
+    } catch (err) {
+      setRequisicaoErro(
+        err.response?.data?.mensagem || "Erro ao listar projetos"
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const iniciaAtualizacaoProjeto = (projeto) => {
@@ -61,36 +72,57 @@ const ProjetosPage = () => {
     <div>
       <ButtonGoBack />
       <h1>Projetos</h1>
-      <Button value={"Novo"} onClick={abreDrawer} />
-      <Spacer height={16} />
-      <DataTable
-        headers={["Nome", "Decrição", "Valor (R$)", "Data Limite", "Cliente"]}
-        columnsRenderNames={[
-          "nome",
-          "descricao",
-          "valor",
-          "dataLimite",
-          "cliente",
-        ]}
-        data={projetos.map((projeto) => {
-          return {
-            ...projeto,
-            dataLimite: moment(projeto.dataLimite).format("L"),
-            cliente: projeto.cliente?.razaoSocial,
-          };
-        })}
-        actionsPerRow={[
-          {
-            value: "Modificar",
-            onClick: (event, row) => iniciaAtualizacaoProjeto(row),
-          },
-          {
-            value: "Remover",
-            onClick: (event, row) => iniciaRemocaoProjeto(row),
-          },
-        ]}
-      />
+      {!isLoading && !requisicaoErro && (
+        <>
+          <Button value={"Novo"} onClick={abreDrawer} />
+          <Spacer height={16} />
+          <DataTable
+            headers={[
+              "Nome",
+              "Decrição",
+              "Valor (R$)",
+              "Data Limite",
+              "Cliente",
+            ]}
+            columnsRenderNames={[
+              "nome",
+              "descricao",
+              "valor",
+              "dataLimite",
+              "cliente",
+            ]}
+            data={projetos.map((projeto) => {
+              return {
+                ...projeto,
+                dataLimite: moment(projeto.dataLimite).format("L"),
+                cliente: projeto.cliente?.razaoSocial,
+              };
+            })}
+            actionsPerRow={[
+              {
+                value: "Modificar",
+                onClick: (event, row) => iniciaAtualizacaoProjeto(row),
+              },
+              {
+                value: "Remover",
+                onClick: (event, row) => iniciaRemocaoProjeto(row),
+              },
+              {
+                value: "Atualizações",
+                onClick: (event, row) =>
+                  navigate({
+                    pathname: "/projetos/atualizacoes",
+                    search: createSearchParams({
+                      __projeto_identificacao: row.id,
+                    }).toString(),
+                  }),
+              },
+            ]}
+          />
+        </>
+      )}
       {isLoading && <span>Carregando...</span>}
+      {!isLoading && requisicaoErro && <span>{requisicaoErro}</span>}
 
       <Drawer
         customTitle="Criar Novo Projeto"

@@ -20,18 +20,16 @@ const SideBarMenu = ({ children, menus }) => {
           <span className="hamburguer-item"></span>
           <span className="hamburguer-item"></span>
         </div>
-        {!collapsed && (
-          <div className="sidebar-container">
-            <ul className="sidebar-menus-list">
-              {menus.map(({ titulo, url }, idx) => (
-                <li className="sidebar-menus-item" key={`menu_${idx}`}>
-                  <Link to={url}>{titulo}</Link>
-                </li>
-              ))}
-            </ul>
-            <Button onClick={logout} value={"Logout"} />
-          </div>
-        )}
+        <div className="sidebar-container">
+          <ul className="sidebar-menus-list">
+            {menus.map(({ titulo, url }, idx) => (
+              <li className="sidebar-menus-item" key={`menu_${idx}`}>
+                <Link to={url}>{titulo}</Link>
+              </li>
+            ))}
+          </ul>
+          <Button onClick={logout} value={"Logout"} />
+        </div>
       </div>
       <div className="main">{children}</div>
     </>

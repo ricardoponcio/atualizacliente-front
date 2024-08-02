@@ -1,5 +1,5 @@
 $sidebar-full-size: 300px;
-$sidebar-collapsed-size: 50px;
+$sidebar-collapsed-size: 24px;
 $sidebar-hamburguer-size: 28px;
 $transition-time: 0.5s;
 
@@ -7,16 +7,22 @@ $transition-time: 0.5s;
     position: absolute;
     top: 0;
     left: 0;
-    width: min($sidebar-full-size, 100%);
+    width: $sidebar-full-size;
     height: 100%;
     z-index: 99;
+    padding: 8px;
+    padding-inline: 32px;
 
     background-color: aliceblue;
 
-    -webkit-transition: width $transition-time ease-in-out;
-    -moz-transition: width $transition-time ease-in-out;
-    -o-transition: width $transition-time ease-in-out;
-    transition: width $transition-time ease-in-out;
+    -webkit-transition: left $transition-time ease-in-out;
+    -moz-transition: left $transition-time ease-in-out;
+    -o-transition: left $transition-time ease-in-out;
+    transition: left $transition-time ease-in-out;
+
+    &.collapsed {
+        left: $sidebar-collapsed-size - $sidebar-full-size;
+    }
 
     & .button-collapse {
         position: absolute;
@@ -52,8 +58,6 @@ $transition-time: 0.5s;
     & .sidebar-container {
         margin: 0;
         margin-top: 64px;
-        padding: 8px;
-        padding-inline: 32px;
         display: flex;
         flex-direction: column;
         gap: 16px;
@@ -77,14 +81,6 @@ $transition-time: 0.5s;
     }
 }
 
-.sidebar.collapsed {
-    width: $sidebar-collapsed-size;
-
-    & .button-collapse {
-        left: calc($sidebar-collapsed-size - ($sidebar-hamburguer-size / 2));
-    }
-}
-
 .main {
     position: absolute;
     left: 300px;
@@ -98,6 +94,6 @@ $transition-time: 0.5s;
 }
 
 .sidebar.collapsed~.main {
-    left: 50px;
-    width: calc(100% - 50px);
+    left: $sidebar-collapsed-size;
+    width: calc(100% - $sidebar-collapsed-size);
 }

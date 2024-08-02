@@ -21,7 +21,13 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
   useEffect(() => {
     limparFormulario();
     (async () => {
-      setClientes((await listarClientes()).data);
+      try {
+        setClientes((await listarClientes()).data);
+      } catch (err) {
+        setRequisicaoErro(
+          err.response?.data?.mensagem || "Erro ao listar clientes"
+        );
+      }
     })();
   }, []);
 
@@ -36,6 +42,7 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
   const onSubmitForm = async (event) => {
     event.preventDefault();
     setCarregando(true);
+    setRequisicaoErro("");
     try {
       const projetoCriado = await criaProjeto({
         nome,
@@ -47,7 +54,9 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
       limparFormulario();
       callbackProjetoCriado(projetoCriado.data);
     } catch (err) {
-      setRequisicaoErro(err.response?.data?.mensagem || "Erro ao crir projeto");
+      setRequisicaoErro(
+        err.response?.data?.mensagem || "Erro ao criar projeto"
+      );
     } finally {
       setCarregando(false);
     }

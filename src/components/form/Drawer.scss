@@ -1,15 +1,22 @@
+$width-drawer: 500px;
+$transition-time: .5s;
+
 .drawer-wrapper {
-    position: fixed;
+    //position: fixed;
     top: 0;
     left: 0;
     padding: 0;
     margin: 0;
     z-index: 100;
-    width: 100%;
-    height: 100%;
+    //width: 100%;
+    //height: 100%;
+
+    &.hidden {
+        //display: none;
+    }
 
     & .drawer-overlay {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         padding: 0;
@@ -18,13 +25,23 @@
         z-index: 100;
         width: 100%;
         height: 100%;
+
+        visibility: visible;
+        opacity: 1;
+        transition: visibility $transition-time, opacity $transition-time linear;
+    }
+
+    &.hidden .drawer-overlay {
+        opacity: 0;
+        visibility: hidden;
+        transition: visibility $transition-time, opacity $transition-time linear;
     }
 
     & .drawer-container {
-        position: absolute;
+        position: fixed;
         margin: 0;
         top: 0;
-        width: 500px;
+        width: $width-drawer;
         height: 100%;
         background-color: white;
         z-index: 101;
@@ -40,12 +57,30 @@
         }
     }
 
+    &.hidden .drawer-container.left {
+        left: -$width-drawer;
+    }
+
     & .drawer-container.left {
         left: 0;
+
+        -webkit-transition: left $transition-time ease-in-out;
+        -moz-transition: left $transition-time ease-in-out;
+        -o-transition: left $transition-time ease-in-out;
+        transition: left $transition-time ease-in-out;
+    }
+
+    &.hidden .drawer-container.right {
+        right: -$width-drawer;
     }
 
     & .drawer-container.right {
         right: 0;
+
+        -webkit-transition: right $transition-time ease-in-out;
+        -moz-transition: right $transition-time ease-in-out;
+        -o-transition: right $transition-time ease-in-out;
+        transition: right $transition-time ease-in-out;
     }
 
 }

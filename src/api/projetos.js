@@ -6,6 +6,7 @@ export const useApiProjetos = () => {
 
   return {
     listarProjetos: () => api.get("/projetos/listar"),
+    detalharProjeto: (id) => api.get(`/projetos/${id}/detalhe`),
     criaProjeto: (projeto) => api.put("/projetos/criar", projeto),
     atualizaProjeto: (id, projeto) =>
       api.patch(`/projetos/atualizar/${id}`, projeto),
@@ -18,5 +19,7 @@ export const useApiProjetos = () => {
           senhaCliente,
         }
       ),
+    emitirAtualizacao: (projetoId, atualizacao) =>
+      api.put(`/projetos/${projetoId}/atualizacoes/criar`, atualizacao),
   };
 };
