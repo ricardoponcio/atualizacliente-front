@@ -18,6 +18,7 @@ const ClientesPage = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [requisicaoErro, setRequisicaoErro] = useState("");
 
   useEffect(() => {
     atualizaDadosPagina();
@@ -31,8 +32,16 @@ const ClientesPage = () => {
 
   const atualizaDadosPagina = async () => {
     setIsLoading(true);
-    setClientes((await listarClientes()).data);
-    setIsLoading(false);
+    setRequisicaoErro("");
+    try {
+      setClientes((await listarClientes()).data);
+    } catch (err) {
+      setRequisicaoErro(
+        err.response?.data?.mensagem || "Erro ao listar clientes"
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const iniciaAtualizacaoCliente = (cliente) => {
@@ -60,31 +69,45 @@ const ClientesPage = () => {
     <div>
       <ButtonGoBack />
       <h1>Clientes</h1>
-      <Button value={"Novo"} onClick={abreDrawer} />
-      <Spacer height={16} />
-      <DataTable
-        headers={["Razão Social", "Nome Fantasia", "CNPJ", "E-mail"]}
-        columnsRenderNames={["razaoSocial", "nomeFantasia", "cnpj", "email"]}
-        data={clientes?.map((cliente) => {
-          return {
-            ...cliente,
-          };
-        })}
-        actionsPerRow={[
-          {
-            value: "Modificar",
-            onClick: (event, row) => iniciaAtualizacaoCliente(row),
-          },
-          {
-            value: "Remover",
-            onClick: (event, row) => iniciaRemocaoCliente(row),
-          },
-        ]}
-      />
+      {!isLoading && !requisicaoErro && (
+        <>
+          <Button
+            value={"Novo"}
+            onClick={() => {
+              setClienteAtualizacao("");
+              abreDrawer();
+            }}
+          />
+          <Spacer height={16} />
+          <DataTable
+            headers={["Razão Social", "Nome Fantasia", "CNPJ", "E-mail"]}
+            columnsRenderNames={[
+              "razaoSocial",
+              "nomeFantasia",
+              "cnpj",
+              "email",
+            ]}
+            data={clientes}
+            actionsPerRow={[
+              {
+                value: "Modificar",
+                onClick: (event, row) => iniciaAtualizacaoCliente(row),
+              },
+              {
+                value: "Remover",
+                onClick: (event, row) => iniciaRemocaoCliente(row),
+              },
+            ]}
+          />
+        </>
+      )}
       {isLoading && <span>Carregando...</span>}
+      {!isLoading && requisicaoErro && <span>{requisicaoErro}</span>}
 
       <Drawer
-        customTitle="Criar Novo Cliente"
+        customTitle={
+          clienteAtualizacao ? "Modificar Cliente" : "Criar Novo Cliente"
+        }
         isVisible={isDrawerOpen}
         onClose={fechaDrawer}
       >

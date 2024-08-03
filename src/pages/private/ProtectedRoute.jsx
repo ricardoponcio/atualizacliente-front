@@ -13,8 +13,10 @@ const ProtectedRoute = ({ usuario, redirecionamento = "/login", children }) => {
   ) : (
     <SideBarMenu
       menus={[
+        { titulo: "Início", url: "/" },
         { titulo: "Projetos", url: "/projetos" },
         { titulo: "Clientes", url: "/clientes" },
+        { titulo: "Config. Email", url: "/configuracaoEmail" },
       ]}
     >
       <Outlet />

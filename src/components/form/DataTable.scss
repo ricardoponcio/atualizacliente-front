@@ -22,6 +22,14 @@
             & .my-custom-table-cell {
                 padding: 8px;
             }
+
+            & .my-custom-table-actions-cell {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
             
         }
 

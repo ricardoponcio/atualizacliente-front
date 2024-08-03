@@ -62,6 +62,22 @@ $transition-time: 0.5s;
         flex-direction: column;
         gap: 16px;
 
+        & .greeting {
+            display: flex;
+            flex-direction: column;
+            
+            &>*{
+                color: gray;
+                font-size: 1.4rem;
+            }
+
+            &>*:not(:first-child) {
+                color: black;
+                font-weight: 500;
+                font-size: 1.6rem;
+            }
+        }
+
         & .sidebar-menus-list {
             list-style: none;
             padding: 0;
@@ -85,7 +101,11 @@ $transition-time: 0.5s;
     position: absolute;
     left: 300px;
     width: calc(100% - 300px);
-    padding: 32px;
+    max-width: calc(100% - 300px);
+    height: 100%;
+    max-height: 100%;
+    padding: 48px;
+    overflow-y: auto;
 
     -webkit-transition: all $transition-time ease-in-out;
     -moz-transition: all $transition-time ease-in-out;

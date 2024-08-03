@@ -1,7 +1,9 @@
 body,
 #root {
     width: 100dvw;
+    max-width: 100dvw;
     height: 100dvh;
+    max-height: 100dvh;
     padding: 0;
     margin: 0;
     position: absolute;

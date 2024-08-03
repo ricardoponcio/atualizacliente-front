@@ -3,6 +3,7 @@ import React from "react";
 import "./Select.scss";
 
 const Select = ({
+  defaultValue,
   value = "",
   placeholder = "",
   onChange = () => {},
@@ -11,6 +12,8 @@ const Select = ({
   selectOptionLabelFactory,
   options = [],
   firstOptionNull = true,
+  firstOptionValue = "Selecione...",
+  firstOptionDisabled = true,
 }) => {
   const onChangeInput = (event) => {
     onChange(event.target?.value);
@@ -35,13 +38,19 @@ const Select = ({
 
   return (
     <select
+      defaultValue={defaultValue}
       className="my-custom-select"
       value={value}
       onChange={onChangeField || onChangeInput}
       placeholder={placeholder}
     >
       {firstOptionNull && (
-        <option key={`option_-1_${new Date().getTime()}`}></option>
+        <option
+          key={`option_-1_${new Date().getTime()}`}
+          {...(firstOptionDisabled ? { style: { display: "none" } } : {})}
+        >
+          {firstOptionValue}
+        </option>
       )}
       {options?.map((option, idx) => (
         <option

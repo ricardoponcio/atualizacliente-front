@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 import { useAuth } from "context/authContext";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./SideBarMenu.scss";
 import Button from "./form/Button";
 
 const SideBarMenu = ({ children, menus }) => {
-  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
+  const currentPath = window.location.pathname;
 
   return (
     <>
@@ -21,11 +23,19 @@ const SideBarMenu = ({ children, menus }) => {
           <span className="hamburguer-item"></span>
         </div>
         <div className="sidebar-container">
+          <div className="greeting">
+            <span>Olá</span>
+            <span>{user.nome}</span>
+          </div>
           <ul className="sidebar-menus-list">
             {menus.map(({ titulo, url }, idx) => (
-              <li className="sidebar-menus-item" key={`menu_${idx}`}>
-                <Link to={url}>{titulo}</Link>
-              </li>
+              <Button
+                activeState={url === currentPath}
+                className="sidebar-menus-item"
+                key={`menu_${idx}`}
+                onClick={() => navigate(url)}
+                value={titulo}
+              />
             ))}
           </ul>
           <Button onClick={logout} value={"Logout"} />

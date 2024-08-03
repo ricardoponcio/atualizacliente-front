@@ -1,10 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useApiCliente, useApiProjetos } from "api";
-import moment from "moment";
+import moment from 'moment-timezone';
 import React, { useEffect, useState } from "react";
 import Form from "./form/Form";
 import Input from "./form/Input";
 import Select from "./form/Select";
+
+import "react-datepicker/dist/react-datepicker.css";
+import FlexList from "./form/FlexList";
+import InputDate from "./form/InputDate";
 
 const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
   const { criaProjeto } = useApiProjetos();
@@ -48,7 +52,7 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
         nome,
         descricao,
         valor,
-        dataLimite: moment(dataLimite).utc().format(),
+        dataLimite: moment(dataLimite, "DD/MM/YYYY").format(),
         clienteId: clientes[cliente].id,
       });
       limparFormulario();
@@ -65,32 +69,39 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
   return (
     <>
       <Form submitText="Criar" onSubmit={onSubmitForm}>
-        <Input type="text" placeholder="Nome" value={nome} onChange={setNome} />
-        <Input
-          type="text"
-          placeholder="Descrição"
-          value={descricao}
-          onChange={setDescricao}
-        />
-        <Input
-          type="number"
-          placeholder="Valor (R$)"
-          value={valor}
-          onChange={setValor}
-        />
-        <Input
-          type="date"
-          placeholder="Data Limite"
-          value={dataLimite}
-          onChange={setDataLimite}
-        />
-        <Select
-          value={cliente}
-          onChange={setCliente}
-          options={clientes}
-          selectOptionLabelFactory={(cliente) => cliente.razaoSocial}
-          selectOptionValueFactory={(_, idx) => idx}
-        />
+        <FlexList labelValuePairs={true}>
+          <span>Nome</span>
+          <Input
+            type="text"
+            placeholder="Meu Projeto"
+            value={nome}
+            onChange={setNome}
+          />
+          <span>Descrição</span>
+          <Input
+            type="text"
+            placeholder="Insira uma pequena descrição..."
+            value={descricao}
+            onChange={setDescricao}
+          />
+          <span>Valor (R$)</span>
+          <Input
+            type="number"
+            placeholder="R$ 1.000,00"
+            value={valor}
+            onChange={setValor}
+          />
+          <span>Data Limite</span>
+          <InputDate value={dataLimite} onChange={setDataLimite} />
+          <span>Cliente</span>
+          <Select
+            value={cliente}
+            onChange={setCliente}
+            options={clientes}
+            selectOptionLabelFactory={(cliente) => cliente.razaoSocial}
+            selectOptionValueFactory={(_, idx) => idx}
+          />
+        </FlexList>
       </Form>
       {carregando && <span>Carregando...</span>}
       {requisicaoErro && <span>{requisicaoErro}</span>}

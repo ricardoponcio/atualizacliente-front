@@ -4,14 +4,9 @@ import ButtonGoBack from "components/form/ButtonGoBack";
 import Loader from "components/form/Loader";
 import Spacer from "components/Spacer";
 import React, { useEffect, useState } from "react";
-import {
-  createSearchParams,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const NovaAtualizacaoPage = () => {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { detalharProjeto } = useApiProjetos();
   const [projeto, setProjeto] = useState("");
@@ -39,14 +34,7 @@ const NovaAtualizacaoPage = () => {
 
   return (
     <div>
-      <ButtonGoBack
-        path={{
-          pathname: "/projetos/atualizacoes",
-          search: createSearchParams({
-            __projeto_identificacao: projetoId,
-          }).toString(),
-        }}
-      />
+      <ButtonGoBack />
       <h1>Emitir Nova Atualização</h1>
       <h5>Projeto ID {projetoId}</h5>
       <Spacer height={16} />
@@ -55,7 +43,7 @@ const NovaAtualizacaoPage = () => {
       {!isLoading && (
         <CriaAtualizacao
           projeto={projeto}
-          callbackAtualizacaoEmitida={() => navigate("/projetos")}
+          callbackAtualizacaoEmitida={history.goBack}
         />
       )}
     </div>

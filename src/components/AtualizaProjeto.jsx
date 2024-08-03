@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useApiProjetos } from "api";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
+import FlexList from "./form/FlexList";
 import Form from "./form/Form";
 import Input from "./form/Input";
+import InputDate from "./form/InputDate";
 
 const AtualizaProjeto = ({ projeto, callbackProjetoAtualizado = () => {} }) => {
   const { atualizaProjeto } = useApiProjetos();
@@ -14,13 +16,16 @@ const AtualizaProjeto = ({ projeto, callbackProjetoAtualizado = () => {} }) => {
   const [carregando, setCarregando] = useState(false);
   const [requisicaoErro, setRequisicaoErro] = useState("");
 
-  useEffect(() => {
+  useEffect(() => resetaFormulario(), []);
+  useEffect(() => resetaFormulario(), [projeto]);
+
+  const resetaFormulario = () => {
     limparFormulario();
     setNome(projeto.nome || "");
     setDescricao(projeto.descricao || "");
     setValor(projeto.valor || "");
     setDataLimite(projeto.dataLimite || "");
-  }, []);
+  };
 
   const limparFormulario = () => {
     setNome("");
@@ -38,7 +43,7 @@ const AtualizaProjeto = ({ projeto, callbackProjetoAtualizado = () => {} }) => {
         nome,
         descricao,
         valor,
-        dataLimite: moment(dataLimite).utc().format(),
+        dataLimite: moment(dataLimite).format(),
       });
       callbackProjetoAtualizado(projetoCriado.data);
       limparFormulario();
@@ -54,25 +59,31 @@ const AtualizaProjeto = ({ projeto, callbackProjetoAtualizado = () => {} }) => {
   return (
     <>
       <Form submitText="Atualizar" onSubmit={onSubmitForm}>
-        <Input type="text" placeholder="Nome" value={nome} onChange={setNome} />
-        <Input
-          type="text"
-          placeholder="Descrição"
-          value={descricao}
-          onChange={setDescricao}
-        />
-        <Input
-          type="number"
-          placeholder="Valor (R$)"
-          value={valor}
-          onChange={setValor}
-        />
-        <Input
-          type="date"
-          placeholder="Data Limite"
-          value={dataLimite}
-          onChange={setDataLimite}
-        />
+        <FlexList labelValuePairs={true}>
+          <span>Nome</span>
+          <Input
+            type="text"
+            placeholder="Meu Projeto"
+            value={nome}
+            onChange={setNome}
+          />
+          <span>Descrição</span>
+          <Input
+            type="text"
+            placeholder="Insira uma pequena descrição..."
+            value={descricao}
+            onChange={setDescricao}
+          />
+          <span>Valor (R$)</span>
+          <Input
+            type="number"
+            placeholder="R$ 1.000,00"
+            value={valor}
+            onChange={setValor}
+          />
+          <span>Data Limite</span>
+          <InputDate value={dataLimite} onChange={setDataLimite} />
+        </FlexList>
       </Form>
       {carregando && <span>Carregando...</span>}
       {requisicaoErro && <span>{requisicaoErro}</span>}

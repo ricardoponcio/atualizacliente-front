@@ -7,7 +7,7 @@ import DataTable from "components/form/DataTable";
 import Drawer from "components/form/Drawer";
 import Popup from "components/form/Popup";
 import Spacer from "components/Spacer";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
 
@@ -74,7 +74,13 @@ const ProjetosPage = () => {
       <h1>Projetos</h1>
       {!isLoading && !requisicaoErro && (
         <>
-          <Button value={"Novo"} onClick={abreDrawer} />
+          <Button
+            value={"Novo"}
+            onClick={() => {
+              setProjetoAtualizacao("");
+              abreDrawer();
+            }}
+          />
           <Spacer height={16} />
           <DataTable
             headers={[
@@ -101,7 +107,8 @@ const ProjetosPage = () => {
             actionsPerRow={[
               {
                 value: "Modificar",
-                onClick: (event, row) => iniciaAtualizacaoProjeto(row),
+                onClick: (event, row, idx) =>
+                  iniciaAtualizacaoProjeto(projetos[idx]),
               },
               {
                 value: "Remover",
@@ -117,6 +124,16 @@ const ProjetosPage = () => {
                     }).toString(),
                   }),
               },
+              {
+                value: "Nova Atualização",
+                onClick: (event, row) =>
+                  navigate({
+                    pathname: "/projetos/atualizacoes/nova",
+                    search: createSearchParams({
+                      __projeto_identificacao: row.id,
+                    }).toString(),
+                  }),
+              },
             ]}
           />
         </>
@@ -125,7 +142,9 @@ const ProjetosPage = () => {
       {!isLoading && requisicaoErro && <span>{requisicaoErro}</span>}
 
       <Drawer
-        customTitle="Criar Novo Projeto"
+        customTitle={
+          projetoAtualizacao ? "Modificar Projeto" : "Criar Novo Projeto"
+        }
         isVisible={isDrawerOpen}
         onClose={fechaDrawer}
       >

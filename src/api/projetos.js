@@ -12,6 +12,7 @@ export const useApiProjetos = () => {
       api.patch(`/projetos/atualizar/${id}`, projeto),
     removeProjeto: (id) => api.delete(`/projetos/remover/${id}`),
     listaAtualizacoes: (id) => api.get(`/projetos/listar/${id}/atualizacoes`),
+    detalhaAtualizacao: (id) => api.get(`/projetos/atualizacao/${id}/detalhe`),
     buscaAtualizacaoToken: (token, senhaCliente) =>
       apiWithoutInterceptor.post(
         `/projetos/listar/${token}/atualizacoes/token`,

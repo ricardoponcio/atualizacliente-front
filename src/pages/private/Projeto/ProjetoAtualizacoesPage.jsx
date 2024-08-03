@@ -3,7 +3,7 @@ import Button from "components/form/Button";
 import ButtonGoBack from "components/form/ButtonGoBack";
 import DataTable from "components/form/DataTable";
 import Spacer from "components/Spacer";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import {
   createSearchParams,
@@ -75,7 +75,13 @@ const ProjetoAtualizacoesPage = () => {
             actionsPerRow={[
               {
                 value: "Detalhar",
-                onClick: (event, row) => console.log(row),
+                onClick: (event, row) =>
+                  navigate({
+                    pathname: "/projetos/atualizacao/detalhe",
+                    search: createSearchParams({
+                      __projeto_atualizacao_identificacao: row.id,
+                    }).toString(),
+                  }),
               },
             ]}
           />

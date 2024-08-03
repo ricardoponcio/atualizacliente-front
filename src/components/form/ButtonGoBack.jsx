@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import "./Button.scss";
 
-const ButtonGoBack = ({ value = "Voltar", path = "/" }) => {
+const ButtonGoBack = ({ value = "Voltar", path }) => {
   const navigate = useNavigate();
 
-  return <Button value={value} onClick={() => navigate(path)} />;
+  return <Button value={value} onClick={() => navigate(path ? path : -1)} />;
 };
 
 export default ButtonGoBack;

@@ -1,17 +1,22 @@
 /* eslint-disable react/prop-types */
 import Cookies from "js-cookie";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useApiAuth } from "../api";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState();
   const { login: loginRequest, logout: logoutRequest } = useApiAuth();
 
   useEffect(() => {
     const loggedUser = Cookies.get("user");
     if (loggedUser) setUser(JSON.parse(loggedUser));
+
+    const olderPage = localStorage.getItem("current_page");
+    if (olderPage) navigate(olderPage);
   }, []);
 
   const login = async (usuario, senha) => {

@@ -1,8 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useApiProjetos } from "api";
+import { convertToRaw, EditorState } from "draft-js";
+import draftToHtml from "draftjs-to-html";
 import React, { useEffect, useState } from "react";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import Box from "./form/Box";
 import Form from "./form/Form";
-import Input from "./form/Input";
 import Select from "./form/Select";
 
 const CriaAtualizacao = ({
@@ -10,7 +14,7 @@ const CriaAtualizacao = ({
   callbackAtualizacaoEmitida = () => {},
 }) => {
   const { emitirAtualizacao } = useApiProjetos();
-  const [descricao, setDescricao] = useState("");
+  const [descricao, setDescricao] = useState();
   const [status, setStatus] = useState("");
   const [subStatus, setSubStatus] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -21,9 +25,9 @@ const CriaAtualizacao = ({
   }, []);
 
   const limparFormulario = () => {
-    setDescricao("");
+    setDescricao(EditorState.createEmpty());
     setStatus(projeto.status || "");
-    setStatus(projeto.subStatus || "");
+    setSubStatus(projeto.subStatus || "");
   };
 
   const onSubmitForm = async (event) => {
@@ -31,7 +35,7 @@ const CriaAtualizacao = ({
     setCarregando(true);
     try {
       const atualizacaoEmitida = await emitirAtualizacao(projeto.id, {
-        descricao,
+        descricao: draftToHtml(convertToRaw(descricao.getCurrentContent())),
         status,
         subStatus,
       });
@@ -57,26 +61,25 @@ const CriaAtualizacao = ({
   return (
     <>
       <Form autoWidth={true} submitText="Emitir" onSubmit={onSubmitForm}>
-        <Select
-          value={status}
-          onChange={setStatus}
-          options={["Aberto", "Concluído"]}
-          selectOptionLabelFactory={(opcao) => opcao}
-          selectOptionValueFactory={(opcao) => opcao}
-        />
-        <Select
-          value={subStatus}
-          onChange={setSubStatus}
-          options={getSubStatusFromStatus(status)}
-          selectOptionLabelFactory={(opcao) => opcao}
-          selectOptionValueFactory={(opcao) => opcao}
-        />
-        <Input
-          type="text"
-          placeholder="Descrição"
-          value={descricao}
-          onChange={setDescricao}
-        />
+        <Box fixedWidth={200}>
+          <Select
+            value={status}
+            onChange={setStatus}
+            options={["Aberto", "Concluído"]}
+            selectOptionLabelFactory={(opcao) => opcao}
+            selectOptionValueFactory={(opcao) => opcao}
+          />
+        </Box>
+        <Box fixedWidth={200}>
+          <Select
+            value={subStatus}
+            onChange={setSubStatus}
+            options={getSubStatusFromStatus(status)}
+            selectOptionLabelFactory={(opcao) => opcao}
+            selectOptionValueFactory={(opcao) => opcao}
+          />
+        </Box>
+        <Editor editorState={descricao} onEditorStateChange={setDescricao} />
         {carregando && <span>Carregando...</span>}
         {requisicaoErro && <span>{requisicaoErro}</span>}
       </Form>

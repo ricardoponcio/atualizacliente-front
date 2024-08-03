@@ -51,7 +51,10 @@ const DataTable = ({
               )
             )}
             {actionsPerRow && actionsPerRow.length > 0 && (
-              <td key={`row_${idxRow}_actions`}>
+              <td
+                key={`row_${idxRow}_actions`}
+                className="my-custom-table-actions-cell"
+              >
                 {actionsPerRow?.map((action, idxAction) =>
                   customActionFactory ? (
                     customActionFactory(action, idxAction)
@@ -59,7 +62,7 @@ const DataTable = ({
                     <Button
                       key={`row_${idxRow}_action_${idxAction}`}
                       value={action.value}
-                      onClick={(event) => action.onClick(event, row)}
+                      onClick={(event) => action.onClick(event, row, idxRow)}
                     />
                   )
                 )}

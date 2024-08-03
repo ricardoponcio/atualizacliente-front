@@ -13,13 +13,16 @@ const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
   const [carregando, setCarregando] = useState(false);
   const [requisicaoErro, setRequisicaoErro] = useState("");
 
-  useEffect(() => {
+  useEffect(() => resetaFormulario(), []);
+  useEffect(() => resetaFormulario(), [cliente]);
+
+  const resetaFormulario = () => {
     limparFormulario();
     setRazaoSocial(cliente.razaoSocial || "");
     setNomeFantasia(cliente.nomeFantasia || "");
     setCnpj(cliente.cnpj || "");
     setEmail(cliente.email || "");
-  }, []);
+  };
 
   const limparFormulario = () => {
     setRazaoSocial("");
