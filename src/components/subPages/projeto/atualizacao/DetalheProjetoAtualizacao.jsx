@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import Input from "./form/Input";
+import Input from "../../../form/Input";
 
 import moment from "moment-timezone";
 import "react-datepicker/dist/react-datepicker.css";
-import FlexList from "./form/FlexList";
+import FlexList from "../../../form/FlexList";
 import InfoProjetoAtualizacao from "./InfoProjetoAtualizacao";
 
 const DetalheProjetoAtualizacao = ({ atualizacao }) => {

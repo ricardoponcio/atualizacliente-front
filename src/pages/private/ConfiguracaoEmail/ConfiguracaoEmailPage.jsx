@@ -1,12 +1,12 @@
 import { useApiConfiguracaoEmail } from "api";
-import AtualizaConfiguracaoEmail from "components/AtualizarConfiguracaoEmail";
-import CriaConfiguracaoEmail from "components/CriaConfiguracaoEmail";
+import AtualizaConfiguracaoEmail from "components/subPages/configuracaoEmail/AtualizarConfiguracaoEmail";
+import CriaConfiguracaoEmail from "components/subPages/configuracaoEmail/CriaConfiguracaoEmail";
 import Button from "components/form/Button";
 import ButtonGoBack from "components/form/ButtonGoBack";
 import DataTable from "components/form/DataTable";
 import Drawer from "components/form/Drawer";
 import Popup from "components/form/Popup";
-import Spacer from "components/Spacer";
+import Spacer from "components/form/Spacer";
 import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 

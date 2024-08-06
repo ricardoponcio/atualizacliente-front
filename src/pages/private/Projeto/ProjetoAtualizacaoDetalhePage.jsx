@@ -1,5 +1,5 @@
 import { useApiProjetos } from "api";
-import DetalheProjetoAtualizacao from "components/DetalheProjetoAtualizacao";
+import DetalheProjetoAtualizacao from "components/subPages/projeto/atualizacao/DetalheProjetoAtualizacao";
 import ButtonGoBack from "components/form/ButtonGoBack";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";

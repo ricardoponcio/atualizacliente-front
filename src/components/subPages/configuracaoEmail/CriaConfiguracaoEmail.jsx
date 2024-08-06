@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useApiConfiguracaoEmail } from "api";
 import React, { useEffect, useState } from "react";
-import Form from "./form/Form";
-import Input from "./form/Input";
-import CheckBox from "./form/Checkbox";
+import Form from "../../form/Form";
+import Input from "../../form/Input";
+import CheckBox from "../../form/Checkbox";
 
 const CriaConfiguracaoEmail = ({ callbackConfiguracaoCriada = () => {} }) => {
   const { criaConfiguracao } = useApiConfiguracaoEmail();

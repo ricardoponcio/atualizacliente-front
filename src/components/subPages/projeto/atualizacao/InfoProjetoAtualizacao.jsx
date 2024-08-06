@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import Input from "./form/Input";
+import Input from "../../../form/Input";
 
 import "react-datepicker/dist/react-datepicker.css";
-import FlexList from "./form/FlexList";
-import HtmlBox from "./form/HtmlBox";
+import FlexList from "../../../form/FlexList";
+import HtmlBox from "../../../form/HtmlBox";
 
 const InfoProjetoAtualizacao = ({ atualizacao }) => {
   return (

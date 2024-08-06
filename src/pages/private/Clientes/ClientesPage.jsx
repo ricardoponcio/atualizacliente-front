@@ -1,12 +1,12 @@
 import { useApiCliente } from "api";
-import AtualizaCliente from "components/AtualizaCliente";
-import CriaCliente from "components/CriaCliente";
+import AtualizaCliente from "components/subPages/cliente/AtualizaCliente";
+import CriaCliente from "components/subPages/cliente/CriaCliente";
 import Button from "components/form/Button";
 import ButtonGoBack from "components/form/ButtonGoBack";
 import DataTable from "components/form/DataTable";
 import Drawer from "components/form/Drawer";
 import Popup from "components/form/Popup";
-import Spacer from "components/Spacer";
+import Spacer from "components/form/Spacer";
 import React, { useEffect, useState } from "react";
 
 const ClientesPage = () => {

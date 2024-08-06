@@ -6,6 +6,10 @@
     &>* {
         width: 100%;
     }
+
+    &.my-custom-flex-list-row {
+        flex-direction: row;
+    }
 }
 
 .my-custom-flex-list.label-value-pairs>*:nth-child(odd):not(:first-child) {

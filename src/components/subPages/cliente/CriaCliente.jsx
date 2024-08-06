@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useApiCliente } from "api";
 import React, { useEffect, useState } from "react";
-import Form from "./form/Form";
-import Input from "./form/Input";
+import Form from "../../form/Form";
+import Input from "../../form/Input";
 
-const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
-  const { atualizaCliente } = useApiCliente();
+const CriaCliente = ({ callbackClienteCriado = () => {} }) => {
+  const { criaCliente } = useApiCliente();
   const [razaoSocial, setRazaoSocial] = useState("");
   const [nomeFantasia, setNomeFantasia] = useState("");
   const [cnpj, setCnpj] = useState("");
@@ -13,16 +13,9 @@ const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
   const [carregando, setCarregando] = useState(false);
   const [requisicaoErro, setRequisicaoErro] = useState("");
 
-  useEffect(() => resetaFormulario(), []);
-  useEffect(() => resetaFormulario(), [cliente]);
-
-  const resetaFormulario = () => {
+  useEffect(() => {
     limparFormulario();
-    setRazaoSocial(cliente.razaoSocial || "");
-    setNomeFantasia(cliente.nomeFantasia || "");
-    setCnpj(cliente.cnpj || "");
-    setEmail(cliente.email || "");
-  };
+  }, []);
 
   const limparFormulario = () => {
     setRazaoSocial("");
@@ -36,17 +29,17 @@ const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
     setCarregando(true);
     setRequisicaoErro("");
     try {
-      const clienteAtualizaco = await atualizaCliente(cliente.id, {
+      const clienteCriado = await criaCliente({
         razaoSocial,
         nomeFantasia,
         cnpj,
         email,
       });
-      callbackClienteAtualizado(clienteAtualizaco.data);
+      callbackClienteCriado(clienteCriado.data);
       limparFormulario();
     } catch (err) {
       setRequisicaoErro(
-        err.response?.data?.mensagem || "Erro ao atualizar cliente"
+        err.response?.data?.mensagem || "Erro ao cadastrar cliente"
       );
     } finally {
       setCarregando(false);
@@ -55,7 +48,7 @@ const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
 
   return (
     <>
-      <Form submitText="Atualizar" onSubmit={onSubmitForm}>
+      <Form submitText="Criar" onSubmit={onSubmitForm}>
         <Input
           type="text"
           placeholder="Razão Social"
@@ -82,4 +75,4 @@ const AtualizaCliente = ({ cliente, callbackClienteAtualizado = () => {} }) => {
   );
 };
 
-export default AtualizaCliente;
+export default CriaCliente;

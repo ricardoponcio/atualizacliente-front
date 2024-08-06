@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useApiProjetos } from "api";
-import { convertToRaw, EditorState } from "draft-js";
-import draftToHtml from "draftjs-to-html";
+import HtmlEditor from "components/form/HtmlEditor";
 import React, { useEffect, useState } from "react";
-import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Box from "./form/Box";
-import Form from "./form/Form";
-import Select from "./form/Select";
+import Box from "../../../form/Box";
+import Form from "../../../form/Form";
+import Select from "../../../form/Select";
 
 const CriaAtualizacao = ({
   projeto,
@@ -25,7 +23,7 @@ const CriaAtualizacao = ({
   }, []);
 
   const limparFormulario = () => {
-    setDescricao(EditorState.createEmpty());
+    setDescricao("");
     setStatus(projeto.status || "");
     setSubStatus(projeto.subStatus || "");
   };
@@ -35,7 +33,7 @@ const CriaAtualizacao = ({
     setCarregando(true);
     try {
       const atualizacaoEmitida = await emitirAtualizacao(projeto.id, {
-        descricao: draftToHtml(convertToRaw(descricao.getCurrentContent())),
+        descricao,
         status,
         subStatus,
       });
@@ -79,7 +77,7 @@ const CriaAtualizacao = ({
             selectOptionValueFactory={(opcao) => opcao}
           />
         </Box>
-        <Editor editorState={descricao} onEditorStateChange={setDescricao} />
+        <HtmlEditor valor={descricao} onChange={setDescricao} />
         {carregando && <span>Carregando...</span>}
         {requisicaoErro && <span>{requisicaoErro}</span>}
       </Form>

@@ -1,46 +1,37 @@
 /* eslint-disable react/prop-types */
-import { useApiCliente, useApiProjetos } from "api";
-import moment from 'moment-timezone';
+import { useApiProjetos } from "api";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
-import Form from "./form/Form";
-import Input from "./form/Input";
-import Select from "./form/Select";
+import FlexList from "../../form/FlexList";
+import Form from "../../form/Form";
+import Input from "../../form/Input";
+import InputDate from "../../form/InputDate";
 
-import "react-datepicker/dist/react-datepicker.css";
-import FlexList from "./form/FlexList";
-import InputDate from "./form/InputDate";
-
-const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
-  const { criaProjeto } = useApiProjetos();
-  const { listarClientes } = useApiCliente();
+const AtualizaProjeto = ({ projeto, callbackProjetoAtualizado = () => {} }) => {
+  const { atualizaProjeto } = useApiProjetos();
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState(0);
   const [dataLimite, setDataLimite] = useState("");
-  const [cliente, setCliente] = useState("");
   const [carregando, setCarregando] = useState(false);
-  const [clientes, setClientes] = useState([]);
   const [requisicaoErro, setRequisicaoErro] = useState("");
 
-  useEffect(() => {
+  useEffect(() => resetaFormulario(), []);
+  useEffect(() => resetaFormulario(), [projeto]);
+
+  const resetaFormulario = () => {
     limparFormulario();
-    (async () => {
-      try {
-        setClientes((await listarClientes()).data);
-      } catch (err) {
-        setRequisicaoErro(
-          err.response?.data?.mensagem || "Erro ao listar clientes"
-        );
-      }
-    })();
-  }, []);
+    setNome(projeto.nome || "");
+    setDescricao(projeto.descricao || "");
+    setValor(projeto.valor || "");
+    setDataLimite(projeto.dataLimite || "");
+  };
 
   const limparFormulario = () => {
     setNome("");
     setDescricao("");
     setValor(0);
     setDataLimite("");
-    setCliente("");
   };
 
   const onSubmitForm = async (event) => {
@@ -48,18 +39,17 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
     setCarregando(true);
     setRequisicaoErro("");
     try {
-      const projetoCriado = await criaProjeto({
+      const projetoCriado = await atualizaProjeto(projeto.id, {
         nome,
         descricao,
         valor,
-        dataLimite: moment(dataLimite, "DD/MM/YYYY").format(),
-        clienteId: clientes[cliente].id,
+        dataLimite: moment(dataLimite).format(),
       });
+      callbackProjetoAtualizado(projetoCriado.data);
       limparFormulario();
-      callbackProjetoCriado(projetoCriado.data);
     } catch (err) {
       setRequisicaoErro(
-        err.response?.data?.mensagem || "Erro ao criar projeto"
+        err.response?.data?.mensagem || "Erro ao atualizar projeto"
       );
     } finally {
       setCarregando(false);
@@ -68,7 +58,7 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
 
   return (
     <>
-      <Form submitText="Criar" onSubmit={onSubmitForm}>
+      <Form submitText="Atualizar" onSubmit={onSubmitForm}>
         <FlexList labelValuePairs={true}>
           <span>Nome</span>
           <Input
@@ -93,14 +83,6 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
           />
           <span>Data Limite</span>
           <InputDate value={dataLimite} onChange={setDataLimite} />
-          <span>Cliente</span>
-          <Select
-            value={cliente}
-            onChange={setCliente}
-            options={clientes}
-            selectOptionLabelFactory={(cliente) => cliente.razaoSocial}
-            selectOptionValueFactory={(_, idx) => idx}
-          />
         </FlexList>
       </Form>
       {carregando && <span>Carregando...</span>}
@@ -109,4 +91,4 @@ const CriaProjeto = ({ callbackProjetoCriado = () => {} }) => {
   );
 };
 
-export default CriaProjeto;
+export default AtualizaProjeto;

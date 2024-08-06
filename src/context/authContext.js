@@ -26,7 +26,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await logoutRequest();
+    try {
+      await logoutRequest();
+    } catch(err) {
+      // We don't care about 401 errors in logout
+    }
     setUser(undefined);
     Cookies.remove("user");
   };

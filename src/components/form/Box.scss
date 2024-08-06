@@ -1,3 +1,9 @@
 .my-custom-box {
   display: grid;
+
+  &.my-custom-box-flex-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 }

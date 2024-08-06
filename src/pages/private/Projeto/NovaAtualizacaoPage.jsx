@@ -1,12 +1,13 @@
 import { useApiProjetos } from "api";
-import CriaAtualizacao from "components/CriaAtualizacao";
+import CriaAtualizacao from "components/subPages/projeto/atualizacao/CriaAtualizacao";
 import ButtonGoBack from "components/form/ButtonGoBack";
 import Loader from "components/form/Loader";
-import Spacer from "components/Spacer";
+import Spacer from "components/form/Spacer";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const NovaAtualizacaoPage = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { detalharProjeto } = useApiProjetos();
   const [projeto, setProjeto] = useState("");
@@ -43,7 +44,7 @@ const NovaAtualizacaoPage = () => {
       {!isLoading && (
         <CriaAtualizacao
           projeto={projeto}
-          callbackAtualizacaoEmitida={history.goBack}
+          callbackAtualizacaoEmitida={() => navigate(-1)}
         />
       )}
     </div>

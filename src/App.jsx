@@ -9,7 +9,7 @@ import ConfiguracaoEmailPage from "./pages/private/ConfiguracaoEmail/Configuraca
 import HomePage from "./pages/private/Home/HomePage";
 import NovaAtualizacaoPage from "./pages/private/Projeto/NovaAtualizacaoPage";
 import ProjetoAtualizacaoDetalhePage from "./pages/private/Projeto/ProjetoAtualizacaoDetalhePage";
-import ProjetoAtualizacoesPage from "./pages/private/Projeto/ProjetoAtualizacoesPage";
+import ProjetoAtualizacoesPage from "./pages/private/Projeto/ProjetoDetalhePage";
 import ProjetosPage from "./pages/private/Projeto/ProjetosPage";
 import ProtectedRoute from "./pages/private/ProtectedRoute";
 import ConsultaAtualizacao from "./pages/public/ConsultaAtualizacao/ConsultaAtualizacaoPage";
@@ -32,7 +32,7 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/projetos" element={<ProjetosPage />} />
         <Route
-          path="/projetos/atualizacoes"
+          path="/projetos/detalhe"
           element={<ProjetoAtualizacoesPage />}
         />
         <Route

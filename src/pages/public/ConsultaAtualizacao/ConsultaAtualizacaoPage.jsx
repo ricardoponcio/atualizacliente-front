@@ -3,7 +3,7 @@ import FlexList from "components/form/FlexList";
 import Form from "components/form/Form";
 import Input from "components/form/Input";
 import Loader from "components/form/Loader";
-import InfoProjetoAtualizacao from "components/InfoProjetoAtualizacao";
+import InfoProjetoAtualizacao from "components/subPages/projeto/atualizacao/InfoProjetoAtualizacao";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import "./ConsultaAtualizacao.scss";
