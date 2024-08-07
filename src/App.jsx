@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./App.scss";
 import { useAuth } from "./context/authContext";
 
+import { useApiSetup } from "api";
+import Loader from "components/form/Loader";
 import moment from "moment-timezone";
 import ClientesPage from "./pages/private/Clientes/ClientesPage";
 import ConfiguracaoEmailPage from "./pages/private/ConfiguracaoEmail/ConfiguracaoEmailPage";
@@ -14,27 +16,47 @@ import ProjetosPage from "./pages/private/Projeto/ProjetosPage";
 import ProtectedRoute from "./pages/private/ProtectedRoute";
 import ConsultaAtualizacao from "./pages/public/ConsultaAtualizacao/ConsultaAtualizacaoPage";
 import LoginPage from "./pages/public/Login/LoginPage";
+import SetupPage from "./pages/public/Setup/SetupPage";
 import ValidaCliente from "./pages/public/ValidaCliente/ValidaClientePage";
 
 const App = () => {
   const location = useLocation();
   const { user: usuario } = useAuth();
+  const { setupNecessario } = useApiSetup();
+  const [isSetupNecessario, setIsSetupNecessario] = useState(undefined);
   moment.locale("pt-br");
   moment.tz("America/Sao_Paulo");
 
   useEffect(() => {
-    localStorage.setItem('current_page', `${location.pathname}${location.search}`);
+    localStorage.setItem(
+      "current_page",
+      `${location.pathname}${location.search}`
+    );
   }, [location]);
+
+  useEffect(() => {
+    validaSetup();
+  }, []);
+
+  const validaSetup = async () => {
+    try {
+      setIsSetupNecessario(undefined);
+      setIsSetupNecessario((await setupNecessario()).data.setupNecessario);
+    } catch (err) {
+      console.error(err);
+      setIsSetupNecessario(false);
+    }
+  };
+
+  if (isSetupNecessario == undefined) return <Loader />;
+  if (isSetupNecessario) return <SetupPage cadastroConcluido={validaSetup} />;
 
   return (
     <Routes>
       <Route element={<ProtectedRoute usuario={usuario} />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/projetos" element={<ProjetosPage />} />
-        <Route
-          path="/projetos/detalhe"
-          element={<ProjetoAtualizacoesPage />}
-        />
+        <Route path="/projetos/detalhe" element={<ProjetoAtualizacoesPage />} />
         <Route
           path="/projetos/atualizacoes/nova"
           element={<NovaAtualizacaoPage />}
