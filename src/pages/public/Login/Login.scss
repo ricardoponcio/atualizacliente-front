@@ -15,12 +15,11 @@
 
 .login-wrapper .login-container {
 
-    & * {
-        display: inline;
+    &>* {
         width: 100%;
     }
 
-    & h1 {
+    &>h1 {
         font-style: normal;
         text-align: center;
     }

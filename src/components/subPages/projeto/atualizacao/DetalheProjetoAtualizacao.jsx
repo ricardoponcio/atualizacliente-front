@@ -11,35 +11,50 @@ const DetalheProjetoAtualizacao = ({ atualizacao }) => {
   return (
     <>
       <h3>Origem do registro</h3>
-      <FlexList labelValuePairs={true}>
-        <label>Criado em</label>
-        <Input value={moment(atualizacao.criadoEm).format("L")} disabled />
-        <label>Criado Por</label>
-        <Input value={atualizacao.criadoPor?.nome} disabled />
+      <FlexList rowDirection={true}>
+        <FlexList labelValuePairs={true}>
+          <label>Criado em</label>
+          <Input value={moment(atualizacao.criadoEm).format("L")} disabled />
+        </FlexList>
+        <FlexList labelValuePairs={true}>
+          <label>Criado Por</label>
+          <Input value={atualizacao.criadoPor?.nome} disabled />
+        </FlexList>
       </FlexList>
       <h3>Informações gerais</h3>
       <InfoProjetoAtualizacao atualizacao={atualizacao} />
       <h3>Dados do Email</h3>
-      <FlexList labelValuePairs={true}>
-        <label>Destino</label>
-        <Input value={atualizacao.email?.emailDestino} disabled />
-        <label>Processado Em</label>
-        <Input
-          value={
-            atualizacao.envioProcessadoEm
-              ? moment(atualizacao.envioProcessadoEm).format("L")
-              : ""
-          }
-          disabled
-        />
-        <label>Resultado</label>
-        <Input value={atualizacao.resultado} disabled />
-        {!atualizacao.resultado && (
+      <FlexList>
+        <FlexList rowDirection={true}>
+          <FlexList labelValuePairs={true}>
+            <label>Destino</label>
+            <Input value={atualizacao.email?.emailDestino} disabled />
+          </FlexList>
+          <FlexList labelValuePairs={true}>
+            <label>Processado Em</label>
+            <Input
+              value={
+                atualizacao.email?.envioProcessadoEm
+                  ? moment(atualizacao.email?.envioProcessadoEm).format("L")
+                  : "Ainda não processado"
+              }
+              disabled
+            />
+          </FlexList>
+        </FlexList>
+        {atualizacao.email?.envioProcessadoEm && (
           <>
-            <label>Erro</label>
-            <Input value={atualizacao.mensagemErro} disabled />
+            <label>Resultado</label>
+            <Input value={atualizacao.email?.resultado} disabled />
           </>
         )}
+        {atualizacao.email?.envioProcessadoEm &&
+          !atualizacao.email?.resultado && (
+            <>
+              <label>Erro</label>
+              <Input value={atualizacao.email?.mensagemErro} disabled />
+            </>
+          )}
       </FlexList>
     </>
   );

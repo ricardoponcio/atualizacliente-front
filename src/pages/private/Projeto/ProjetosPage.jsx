@@ -1,15 +1,16 @@
 import { useApiProjetos } from "api";
-import AtualizaProjeto from "components/subPages/projeto/AtualizaProjeto";
-import CriaProjeto from "components/subPages/projeto/CriaProjeto";
 import Button from "components/form/Button";
 import ButtonGoBack from "components/form/ButtonGoBack";
 import DataTable from "components/form/DataTable";
 import Drawer from "components/form/Drawer";
 import Popup from "components/form/Popup";
 import Spacer from "components/form/Spacer";
+import AtualizaProjeto from "components/subPages/projeto/AtualizaProjeto";
+import CriaProjeto from "components/subPages/projeto/CriaProjeto";
 import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
+import { translateStatus, translateSubStatus } from "utils/projetoUtils";
 
 const ProjetosPage = () => {
   const navigate = useNavigate();
@@ -89,6 +90,7 @@ const ProjetosPage = () => {
               "Valor (R$)",
               "Data Limite",
               "Cliente",
+              "Status/Sub Status",
             ]}
             columnsRenderNames={[
               "nome",
@@ -96,12 +98,17 @@ const ProjetosPage = () => {
               "valor",
               "dataLimite",
               "cliente",
+              "status_sub_status",
             ]}
             data={projetos.map((projeto) => {
               return {
                 ...projeto,
                 dataLimite: moment(projeto.dataLimite).format("L"),
                 cliente: projeto.cliente?.razaoSocial,
+                status_sub_status:
+                  translateStatus(projeto.status) +
+                  " / " +
+                  translateSubStatus(projeto.subStatus),
               };
             })}
             actionsPerRow={[

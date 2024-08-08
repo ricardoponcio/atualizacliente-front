@@ -4,6 +4,7 @@ import Form from "components/form/Form";
 import Input from "components/form/Input";
 import Loader from "components/form/Loader";
 import InfoProjetoAtualizacao from "components/subPages/projeto/atualizacao/InfoProjetoAtualizacao";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import "./ConsultaAtualizacao.scss";
@@ -60,7 +61,16 @@ const ConsultaAtualizacao = () => {
       </div>
       {atualizacao && (
         <div className="consulta-atualizacao-result">
-          <InfoProjetoAtualizacao atualizacao={atualizacao} />
+          <FlexList>
+            <FlexList labelValuePairs={true}>
+              <label>Atualização registrada em</label>
+              <Input
+                value={moment(atualizacao.criadoEm).format("LLL")}
+                disabled
+              />
+            </FlexList>
+            <InfoProjetoAtualizacao atualizacao={atualizacao} />
+          </FlexList>
         </div>
       )}
     </div>

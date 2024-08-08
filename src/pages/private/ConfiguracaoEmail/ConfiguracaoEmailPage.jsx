@@ -9,6 +9,7 @@ import AtualizaConfiguracaoEmail from "components/subPages/configuracaoEmail/Atu
 import CriaConfiguracaoEmail from "components/subPages/configuracaoEmail/CriaConfiguracaoEmail";
 import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
+import { translateResultado } from "utils/emailUtils";
 
 const ConfiguracaoEmailPage = () => {
   const {
@@ -156,6 +157,7 @@ const ConfiguracaoEmailPage = () => {
             data={ultimosEmails?.map((ultimoEmail) => {
               return {
                 ...ultimoEmail,
+                resultado: translateResultado(ultimoEmail.resultado),
                 smtpSsl: ultimoEmail.smtpSsl ? "Sim" : "Não",
                 smtpTls: ultimoEmail.smtpTls ? "Sim" : "Não",
                 smtpAuth: ultimoEmail.smtpAuth ? "Sim" : "Não",

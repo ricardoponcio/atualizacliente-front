@@ -5,6 +5,7 @@ import FlexList from "components/form/FlexList";
 import HtmlBox from "components/form/HtmlBox";
 import Input from "components/form/Input";
 import "react-datepicker/dist/react-datepicker.css";
+import { translateStatus, translateSubStatus } from "utils/projetoUtils";
 
 const InfoProjeto = ({ projeto }) => {
   return (
@@ -16,11 +17,11 @@ const InfoProjeto = ({ projeto }) => {
       <FlexList rowDirection={true}>
         <FlexList labelValuePairs={true}>
           <label>Status</label>
-          <Input value={projeto.status} disabled />
+          <Input value={translateStatus(projeto.status)} disabled />
         </FlexList>
         <FlexList labelValuePairs={true}>
           <label>Substatus</label>
-          <Input value={projeto.subStatus} disabled />
+          <Input value={translateSubStatus(projeto.subStatus)} disabled />
         </FlexList>
       </FlexList>
       <FlexList labelValuePairs={true}>

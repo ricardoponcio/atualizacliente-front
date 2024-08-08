@@ -11,6 +11,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import { translateStatus, translateSubStatus } from "utils/projetoUtils";
 
 const ProjetoDetalhePage = () => {
   const navigate = useNavigate();
@@ -76,6 +77,8 @@ const ProjetoDetalhePage = () => {
             data={atualizacoes?.map((atualizacao) => {
               return {
                 ...atualizacao,
+                status: translateStatus(atualizacao.status),
+                subStatus: translateSubStatus(atualizacao.subStatus),
                 criadoEm: moment(atualizacao.criadoEm).format("L"),
                 email: atualizacao.email?.emailDestino,
               };

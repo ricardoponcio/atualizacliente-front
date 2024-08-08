@@ -4,8 +4,8 @@ import "./App.scss";
 import { useAuth } from "./context/authContext";
 
 import { useApiSetup } from "api";
-import Loader from "components/form/Loader";
 import moment from "moment-timezone";
+import LoadingPage from "./pages/public/Loading/LoadingPage";
 import ClientesPage from "./pages/private/Clientes/ClientesPage";
 import ConfiguracaoEmailPage from "./pages/private/ConfiguracaoEmail/ConfiguracaoEmailPage";
 import HomePage from "./pages/private/Home/HomePage";
@@ -48,7 +48,7 @@ const App = () => {
     }
   };
 
-  if (isSetupNecessario == undefined) return <Loader />;
+  if (isSetupNecessario == undefined) return <LoadingPage />;
   if (isSetupNecessario) return <SetupPage cadastroConcluido={validaSetup} />;
 
   return (
