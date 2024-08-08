@@ -17,6 +17,7 @@ const ProtectedRoute = ({ usuario, redirecionamento = "/login", children }) => {
         { titulo: "Projetos", url: "/projetos" },
         { titulo: "Clientes", url: "/clientes" },
         { titulo: "Config. Email", url: "/configuracaoEmail" },
+        { titulo: "Config. Armazenamento", url: "/configuracaoArmazenamento" },
       ]}
     >
       <Outlet />

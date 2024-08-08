@@ -1,0 +1,117 @@
+/* eslint-disable react/prop-types */
+import { useApiConfiguracaoS3 } from "api";
+import React, { useEffect, useState } from "react";
+import Form from "../../form/Form";
+import Input from "../../form/Input";
+
+const AtualizaConfiguracaoS3 = ({
+  configuracaoS3,
+  callbackConfiguracaoAtualizada = () => {},
+}) => {
+  const { atualizaConfiguracao } = useApiConfiguracaoS3();
+  const [s3ServiceEndpoint, setS3ServiceEndpoint] = useState("");
+  const [s3Region, setS3Region] = useState("");
+  const [s3AccessKey, setS3AccessKey] = useState("");
+  const [s3SecretKey, setS3SecretKey] = useState("");
+  const [s3BucketName, setS3BucketName] = useState("");
+  const [prefixoBase, setPrefixoBase] = useState("");
+  const [carregando, setCarregando] = useState(false);
+  const [requisicaoErro, setRequisicaoErro] = useState("");
+
+  useEffect(() => resetaFormulario(), []);
+  useEffect(() => resetaFormulario(), [configuracaoS3]);
+
+  const resetaFormulario = () => {
+    limparFormulario();
+    setS3ServiceEndpoint(configuracaoS3.s3ServiceEndpoint || "");
+    setS3Region(configuracaoS3.s3Region || "");
+    setS3AccessKey(configuracaoS3.s3AccessKey || "");
+    setS3SecretKey(configuracaoS3.s3SecretKey || "");
+    setS3BucketName(configuracaoS3.s3BucketName || "");
+    setPrefixoBase(configuracaoS3.prefixoBase || "");
+  };
+
+  const limparFormulario = () => {
+    setS3ServiceEndpoint("");
+    setS3Region("");
+    setS3AccessKey("");
+    setS3SecretKey("");
+    setS3BucketName("");
+    setPrefixoBase("");
+  };
+
+  const onSubmitForm = async (event) => {
+    event.preventDefault();
+    setCarregando(true);
+    setRequisicaoErro("");
+    try {
+      const configuracaoAtualizada = await atualizaConfiguracao(
+        configuracaoS3.id,
+        {
+          s3ServiceEndpoint,
+          s3Region,
+          s3AccessKey,
+          s3SecretKey,
+          s3BucketName,
+          prefixoBase,
+        }
+      );
+      callbackConfiguracaoAtualizada(configuracaoAtualizada.data);
+      limparFormulario();
+    } catch (err) {
+      setRequisicaoErro(
+        err.response?.data?.mensagem ||
+          "Erro ao atualizar configuração de armazenamento"
+      );
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  return (
+    <>
+      <Form submitText="Atualizar configuração de S3" onSubmit={onSubmitForm}>
+        <Input
+          type="text"
+          placeholder="Endereço do serviço"
+          value={s3ServiceEndpoint}
+          onChange={setS3ServiceEndpoint}
+        />
+        <Input
+          type="text"
+          placeholder="Região"
+          value={s3Region}
+          onChange={setS3Region}
+        />
+        <Input
+          type="text"
+          placeholder="Chave de Acesso"
+          value={s3AccessKey}
+          onChange={setS3AccessKey}
+        />
+        <Input
+          type="password"
+          placeholder="Chave Secreta"
+          value={s3SecretKey}
+          onChange={setS3SecretKey}
+        />
+        <Input
+          type="text"
+          placeholder="Nome do Bucket"
+          value={s3BucketName}
+          onChange={setS3BucketName}
+        />
+        <Input
+          type="text"
+          placeholder="Prefixo base"
+          value={prefixoBase}
+          onChange={setPrefixoBase}
+        />
+        {carregando && <span>Carregando...</span>}
+        {requisicaoErro && <span>{requisicaoErro}</span>}
+      </Form>
+    </>
+  );
+};
+
+export default AtualizaConfiguracaoS3;

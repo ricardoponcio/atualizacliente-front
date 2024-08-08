@@ -5,9 +5,9 @@ import { useAuth } from "./context/authContext";
 
 import { useApiSetup } from "api";
 import moment from "moment-timezone";
-import LoadingPage from "./pages/public/Loading/LoadingPage";
 import ClientesPage from "./pages/private/Clientes/ClientesPage";
 import ConfiguracaoEmailPage from "./pages/private/ConfiguracaoEmail/ConfiguracaoEmailPage";
+import ConfiguracaoS3Page from "./pages/private/ConfiguracaoS3/ConfiguracaoS3Page";
 import HomePage from "./pages/private/Home/HomePage";
 import NovaAtualizacaoPage from "./pages/private/Projeto/NovaAtualizacaoPage";
 import ProjetoAtualizacaoDetalhePage from "./pages/private/Projeto/ProjetoAtualizacaoDetalhePage";
@@ -15,6 +15,7 @@ import ProjetoAtualizacoesPage from "./pages/private/Projeto/ProjetoDetalhePage"
 import ProjetosPage from "./pages/private/Projeto/ProjetosPage";
 import ProtectedRoute from "./pages/private/ProtectedRoute";
 import ConsultaAtualizacao from "./pages/public/ConsultaAtualizacao/ConsultaAtualizacaoPage";
+import LoadingPage from "./pages/public/Loading/LoadingPage";
 import LoginPage from "./pages/public/Login/LoginPage";
 import SetupPage from "./pages/public/Setup/SetupPage";
 import ValidaCliente from "./pages/public/ValidaCliente/ValidaClientePage";
@@ -67,6 +68,10 @@ const App = () => {
         />
         <Route path="/clientes" element={<ClientesPage />} />
         <Route path="/configuracaoEmail" element={<ConfiguracaoEmailPage />} />
+        <Route
+          path="/configuracaoArmazenamento"
+          element={<ConfiguracaoS3Page />}
+        />
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/atualizacao" element={<ConsultaAtualizacao />} />
