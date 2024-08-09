@@ -16,7 +16,7 @@ const CriaAtualizacao = ({
   projeto,
   callbackAtualizacaoEmitida = () => {},
 }) => {
-  const { emitirAtualizacaoComAnexos } = useApiProjetos();
+  const { emitirAtualizacao, emitirAtualizacaoComAnexos } = useApiProjetos();
   const [descricao, setDescricao] = useState();
   const [status, setStatus] = useState("");
   const [subStatus, setSubStatus] = useState("");
@@ -41,15 +41,22 @@ const CriaAtualizacao = ({
     event.preventDefault();
     setCarregando(true);
     try {
-      const atualizacaoEmitida = await emitirAtualizacaoComAnexos(
-        projeto.id,
-        {
-          descricao,
-          status,
-          subStatus,
-        },
-        anexos
-      );
+      const atualizacaoEmitida =
+        anexos && anexos.length > 0
+          ? await emitirAtualizacaoComAnexos(
+              projeto.id,
+              {
+                descricao,
+                status,
+                subStatus,
+              },
+              anexos
+            )
+          : await emitirAtualizacao(projeto.id, {
+              descricao,
+              status,
+              subStatus,
+            });
       limparFormulario();
       callbackAtualizacaoEmitida(atualizacaoEmitida.data);
     } catch (err) {

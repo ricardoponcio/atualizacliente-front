@@ -16,6 +16,7 @@ const AtualizaConfiguracaoEmail = ({
   const [smtpSsl, setsmtpSsl] = useState(false);
   const [smtpTls, setsmtpTls] = useState(false);
   const [smtpAuth, setsmtpAuth] = useState(false);
+  const [enviarDe, setEnviarDe] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [requisicaoErro, setRequisicaoErro] = useState("");
 
@@ -29,6 +30,7 @@ const AtualizaConfiguracaoEmail = ({
     setsmtpSsl(configuracaoEmail.smtpSsl || false);
     setsmtpTls(configuracaoEmail.smtpTls || false);
     setsmtpAuth(configuracaoEmail.smtpAuth || false);
+    setEnviarDe(configuracaoEmail.enviarDe || "");
   };
 
   const limparFormulario = () => {
@@ -37,6 +39,7 @@ const AtualizaConfiguracaoEmail = ({
     setsmtpSsl(false);
     setsmtpTls(false);
     setsmtpAuth(false);
+    setEnviarDe("");
   };
 
   const onSubmitForm = async (event) => {
@@ -52,6 +55,7 @@ const AtualizaConfiguracaoEmail = ({
           smtpSsl,
           smtpTls,
           smtpAuth,
+          enviarDe,
         }
       );
       callbackConfiguracaoAtualizada(configuracaoAtualizada.data);
@@ -90,6 +94,13 @@ const AtualizaConfiguracaoEmail = ({
             label="Autenticação"
             value={smtpAuth}
             onChange={setsmtpAuth}
+          />
+          <label>Endereço Email Origem</label>
+          <Input
+            type="text"
+            placeholder="meuemail@companhia.com.br"
+            value={enviarDe}
+            onChange={setEnviarDe}
           />
         </FlexList>
         <h4>

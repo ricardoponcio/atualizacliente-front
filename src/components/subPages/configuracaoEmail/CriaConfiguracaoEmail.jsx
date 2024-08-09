@@ -15,6 +15,7 @@ const CriaConfiguracaoEmail = ({ callbackConfiguracaoCriada = () => {} }) => {
   const [smtpAuth, setsmtpAuth] = useState(false);
   const [smtpUser, setsmtpUser] = useState("");
   const [smtpPassword, setsmtpPassword] = useState("");
+  const [enviarDe, setEnviarDe] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [requisicaoErro, setRequisicaoErro] = useState("");
 
@@ -30,6 +31,7 @@ const CriaConfiguracaoEmail = ({ callbackConfiguracaoCriada = () => {} }) => {
     setsmtpAuth(false);
     setsmtpUser("");
     setsmtpPassword("");
+    setEnviarDe("");
   };
 
   const onSubmitForm = async (event) => {
@@ -45,6 +47,7 @@ const CriaConfiguracaoEmail = ({ callbackConfiguracaoCriada = () => {} }) => {
         smtpAuth,
         smtpUser,
         smtpPassword,
+        enviarDe,
       });
       callbackConfiguracaoCriada(configuracaoCriada.data);
       limparFormulario();
@@ -101,6 +104,13 @@ const CriaConfiguracaoEmail = ({ callbackConfiguracaoCriada = () => {} }) => {
               />
             </>
           )}
+          <label>Endereço Email Origem</label>
+          <Input
+            type="text"
+            placeholder="meuemail@companhia.com.br"
+            value={enviarDe}
+            onChange={setEnviarDe}
+          />
         </FlexList>
         {carregando && <span>Carregando...</span>}
         {requisicaoErro && <span>{requisicaoErro}</span>}
