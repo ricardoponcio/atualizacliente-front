@@ -6,10 +6,12 @@ import FlexList from "components/form/FlexList";
 import DetalheProjetoAtualizacao from "components/subPages/projeto/atualizacao/DetalheProjetoAtualizacao";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { baixarArquivo, extraiNomeArquivo } from "utils/arquivoUtils";
 
 const ProjetoAtualizacaoDetalhePage = () => {
   const [searchParams] = useSearchParams();
-  const { detalhaAtualizacao } = useApiProjetos();
+  const { detalhaAtualizacao, baixarAnexo: baixarAnexoRequest } =
+    useApiProjetos();
   const [atualizacao, setAtualizacao] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [requisicaoErro, setRequisicaoErro] = useState("");
@@ -28,6 +30,16 @@ const ProjetoAtualizacaoDetalhePage = () => {
       "_blank",
       "noopener,noreferrer,resizable"
     );
+  };
+
+  const baixarAnexo = async (anexo) => {
+    const arquivoResponse = await baixarAnexoRequest(
+      atualizacao.projeto.id,
+      atualizacao.id,
+      anexo.arquivoNomeUpload
+    );
+    const nomeArquivo = extraiNomeArquivo(arquivoResponse);
+    baixarArquivo(arquivoResponse.data, nomeArquivo);
   };
 
   const atualizaDadosPagina = async () => {
@@ -59,7 +71,10 @@ const ProjetoAtualizacaoDetalhePage = () => {
       <h1>Atualização</h1>
       <h5>ID {projetoAtualizacaoId}</h5>
       {!isLoading && !requisicaoErro && (
-        <DetalheProjetoAtualizacao atualizacao={atualizacao} />
+        <DetalheProjetoAtualizacao
+          atualizacao={atualizacao}
+          onBaixarAnexo={baixarAnexo}
+        />
       )}
       {isLoading && <span>Carregando...</span>}
       {!isLoading && requisicaoErro && <span>{requisicaoErro}</span>}

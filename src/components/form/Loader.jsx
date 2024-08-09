@@ -2,9 +2,13 @@
 import React from "react";
 import "./Loader.scss";
 
-const Loader = ({ center = true }) => {
+const Loader = ({ center = true, minified = false }) => {
   return (
-    <div className={`loader-wrapper ${center ? "center" : ""}`}>
+    <div
+      className={`loader-wrapper ${center ? "center" : ""} ${
+        minified ? "minified" : ""
+      }`}
+    >
       <div className="loader"></div>
     </div>
   );

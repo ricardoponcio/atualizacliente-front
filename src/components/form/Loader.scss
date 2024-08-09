@@ -1,29 +1,27 @@
-.loader-wrapper {
-    height: 50px;
-    width: min(100px, 100%);
+$loader-height: 50px;
+$loader-height-minimified: 10px;
 
+.loader-wrapper {
+    height: $loader-height;
+    width: min(100px, 100%);
+    
     &.center {
         display: flex;
         justify-content: center;
         align-items: center;
     }
+    &.minified {
+        height: $loader-height-minimified;
+     
+        & .loader {
+            height: $loader-height-minimified;
+        }
+    }
 }
 
 /* HTML: <div class="loader"></div> */
 .loader {
-    width: 50px;
-    height: 12px;
-    --_g: no-repeat radial-gradient(farthest-side, #000 94%, #0000);
-    background:
-        var(--_g) left,
-        var(--_g) right;
-    background-size: 12px 12px;
-    position: relative;
-}
-
-/* HTML: <div class="loader"></div> */
-.loader {
-    width: 60px;
+    width: $loader-height;
     aspect-ratio: 4;
     --_g: no-repeat radial-gradient(circle closest-side, #000 90%, #0000);
     background:

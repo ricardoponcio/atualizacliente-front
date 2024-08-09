@@ -8,11 +8,12 @@ import InfoAnexoProjeto from "components/subPages/projeto/InfoAnexoProjeto";
 import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { baixarArquivo, extraiNomeArquivo } from "utils/arquivoUtils";
 import "./ConsultaAtualizacao.scss";
 
 const ConsultaAtualizacao = () => {
   const [searchParams] = useSearchParams();
-  const { buscaAtualizacaoToken } = useApiProjetos();
+  const { buscaAtualizacaoToken, baixarAnexoToken } = useApiProjetos();
   const [token, setToken] = useState("");
   const [senhaCliente, setSenhaCliente] = useState("");
   const [atualizacao, setAtualizacao] = useState("");
@@ -39,6 +40,17 @@ const ConsultaAtualizacao = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const baixarAnexo = async (anexo) => {
+    const arquivoResponse = await baixarAnexoToken(
+      atualizacao.projeto.id,
+      atualizacao.id,
+      anexo.arquivoNomeUpload,
+      token
+    );
+    const nomeArquivo = extraiNomeArquivo(arquivoResponse);
+    baixarArquivo(arquivoResponse.data, nomeArquivo);
   };
 
   return (
@@ -71,7 +83,10 @@ const ConsultaAtualizacao = () => {
               />
             </FlexList>
             <InfoProjetoAtualizacao atualizacao={atualizacao} />
-            <InfoAnexoProjeto anexos={atualizacao.anexos} />
+            <InfoAnexoProjeto
+              anexos={atualizacao.anexos}
+              onBaixarAnexo={baixarAnexo}
+            />
           </FlexList>
         </div>
       )}

@@ -8,7 +8,10 @@ import FlexList from "../../../form/FlexList";
 import InfoAnexoProjeto from "../InfoAnexoProjeto";
 import InfoProjetoAtualizacao from "./InfoProjetoAtualizacao";
 
-const DetalheProjetoAtualizacao = ({ atualizacao }) => {
+const DetalheProjetoAtualizacao = ({
+  atualizacao,
+  onBaixarAnexo = () => {},
+}) => {
   return (
     <>
       <h3>Origem do registro</h3>
@@ -58,7 +61,10 @@ const DetalheProjetoAtualizacao = ({ atualizacao }) => {
           )}
       </FlexList>
       <h3>Anexos</h3>
-      <InfoAnexoProjeto anexos={atualizacao.anexos} />
+      <InfoAnexoProjeto
+        anexos={atualizacao.anexos}
+        onBaixarAnexo={onBaixarAnexo}
+      />
     </>
   );
 };

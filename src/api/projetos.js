@@ -14,7 +14,7 @@ export const useApiProjetos = () => {
       formData.append(
         "anexo",
         new Blob([file], {
-          type: "application/octet-stream",
+          type: file.type || "application/octet-stream",
         }),
         file.name
       );
@@ -44,6 +44,14 @@ export const useApiProjetos = () => {
       api.put(
         `/projetos/${projetoId}/atualizacoes/criar/com-anexos`,
         jsonAndFile(atualizacao, anexos)
+      ),
+    baixarAnexo: (projetoId, atualizacaoId, nomeArquivo) =>
+      api.get(
+        `/projetos/${projetoId}/atualizacao/${atualizacaoId}/baixar/${nomeArquivo}`
+      ),
+    baixarAnexoToken: (projetoId, atualizacaoId, nomeArquivo, token) =>
+      apiWithoutInterceptor.get(
+        `/projetos/${projetoId}/atualizacao/${atualizacaoId}/baixar/${nomeArquivo}/token/${token}`
       ),
   };
 };

@@ -1,14 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 
-import Button from "components/form/Button";
 import FlexList from "components/form/FlexList";
-import { filesize } from "filesize";
-import moment from "moment-timezone";
 import "react-datepicker/dist/react-datepicker.css";
-import "./InfoAnexoProjeto.scss";
+import AnexoProjetoArquivo from "./AnexoProjetoArquivo";
 
-const InfoAnexoProjeto = ({ anexos }) => {
+const InfoAnexoProjeto = ({ anexos, onBaixarAnexo = () => {} }) => {
   const [anexosSubList, setAnexosSubList] = useState([]);
 
   useEffect(() => {
@@ -31,21 +28,10 @@ const InfoAnexoProjeto = ({ anexos }) => {
         <FlexList key={`anexo-row-${rowIdx}`} rowDirection={true}>
           {anexoSubList.map((anexo, itemIdx) => (
             <FlexList key={`anexo-row-${rowIdx}-item-${itemIdx}`}>
-              <div className="anexo-item">
-                <FlexList rowDirection={true}>
-                  <span className="arquivo-item-nome">{anexo.arquivoNome}</span>
-                  <span className="arquivo-item-tamanho">
-                    {filesize(anexo.tamanho, { standard: "jedec" })}
-                  </span>
-                </FlexList>
-                <span className="arquivo-item-origem">
-                  Adicionado Por <b>{anexo.criadoPor.nome}</b> em{" "}
-                  <b>{moment(anexo.criadoEm).format("LLL")}</b>
-                </span>
-                <div>
-                  <Button value={"Baixar Anexo"} />
-                </div>
-              </div>
+              <AnexoProjetoArquivo
+                anexo={anexo}
+                onBaixarAnexo={onBaixarAnexo}
+              />
             </FlexList>
           ))}
         </FlexList>
