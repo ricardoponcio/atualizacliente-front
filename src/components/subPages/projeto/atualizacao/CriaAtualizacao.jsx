@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useApiProjetos } from "api";
+import FlexList from "components/form/FlexList";
 import HtmlEditor from "components/form/HtmlEditor";
 import React, { useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { translateStatus, translateSubStatus } from "utils/projetoUtils";
 import Box from "../../../form/Box";
 import Form from "../../../form/Form";
 import Select from "../../../form/Select";
@@ -11,10 +13,12 @@ const CriaAtualizacao = ({
   projeto,
   callbackAtualizacaoEmitida = () => {},
 }) => {
-  const { emitirAtualizacao } = useApiProjetos();
+  const { emitirAtualizacaoComAnexos } = useApiProjetos();
   const [descricao, setDescricao] = useState();
   const [status, setStatus] = useState("");
   const [subStatus, setSubStatus] = useState("");
+  const [anexo, setAnexo] = useState("");
+  const [anexos, setAnexos] = useState([]);
   const [carregando, setCarregando] = useState(false);
   const [requisicaoErro, setRequisicaoErro] = useState("");
 
@@ -24,19 +28,25 @@ const CriaAtualizacao = ({
 
   const limparFormulario = () => {
     setDescricao("");
-    setStatus(projeto.status || "");
-    setSubStatus(projeto.subStatus || "");
+    setStatus(translateStatus(projeto.status) || "");
+    setSubStatus(translateSubStatus(projeto.subStatus) || "");
+    setAnexo("");
+    setAnexos([]);
   };
 
   const onSubmitForm = async (event) => {
     event.preventDefault();
     setCarregando(true);
     try {
-      const atualizacaoEmitida = await emitirAtualizacao(projeto.id, {
-        descricao,
-        status,
-        subStatus,
-      });
+      const atualizacaoEmitida = await emitirAtualizacaoComAnexos(
+        projeto.id,
+        {
+          descricao,
+          status,
+          subStatus,
+        },
+        anexos
+      );
       limparFormulario();
       callbackAtualizacaoEmitida(atualizacaoEmitida.data);
     } catch (err) {
@@ -55,6 +65,15 @@ const CriaAtualizacao = ({
       return ["Aguardando Pagamento", "Finalizado"];
     }
   };
+
+  const handleChangeAnexo = (event) => {
+    setAnexo(event.target.files[0]);
+  };
+
+  useEffect(
+    () => setAnexos((anexos) => [...anexos, anexo].filter((anexo) => !!anexo)),
+    [anexo]
+  );
 
   return (
     <>
@@ -78,6 +97,18 @@ const CriaAtualizacao = ({
           />
         </Box>
         <HtmlEditor valor={descricao} onChange={setDescricao} />
+        <FlexList>
+          <input type="file" onChange={handleChangeAnexo} multiple={false} />
+          {anexos.length > 0 && (
+            <FlexList rowDirection={true}>
+              {anexos.map((anexo, idx) => (
+                <div key={`anexo_${idx}`}>
+                  <span>{anexo.name}</span>
+                </div>
+              ))}
+            </FlexList>
+          )}
+        </FlexList>
         {carregando && <span>Carregando...</span>}
         {requisicaoErro && <span>{requisicaoErro}</span>}
       </Form>

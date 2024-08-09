@@ -4,6 +4,24 @@ export const useApiProjetos = () => {
   const api = useApi();
   const apiWithoutInterceptor = useApi(false);
 
+  const jsonAndFile = (body, files) => {
+    const formData = new FormData();
+    const bodyBlob = new Blob([JSON.stringify(body)], {
+      type: "application/json",
+    });
+    formData.append("body", bodyBlob, "body.json");
+    for (const file of files) {
+      formData.append(
+        "anexo",
+        new Blob([file], {
+          type: "application/octet-stream",
+        }),
+        file.name
+      );
+    }
+    return formData;
+  };
+
   return {
     listarProjetos: () => api.get("/projetos/listar"),
     detalharProjeto: (id) => api.get(`/projetos/${id}/detalhe`),
@@ -22,5 +40,10 @@ export const useApiProjetos = () => {
       ),
     emitirAtualizacao: (projetoId, atualizacao) =>
       api.put(`/projetos/${projetoId}/atualizacoes/criar`, atualizacao),
+    emitirAtualizacaoComAnexos: (projetoId, atualizacao, anexos) =>
+      api.put(
+        `/projetos/${projetoId}/atualizacoes/criar/com-anexos`,
+        jsonAndFile(atualizacao, anexos)
+      ),
   };
 };
