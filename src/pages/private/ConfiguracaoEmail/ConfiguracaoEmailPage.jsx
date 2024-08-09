@@ -92,6 +92,7 @@ const ConfiguracaoEmailPage = () => {
               "Endereço SMTP",
               "Porta SMTP",
               "Usa SSL",
+              "Usa TLS",
               "Autenticação",
               "Último uso sucesso",
             ]}
@@ -99,6 +100,7 @@ const ConfiguracaoEmailPage = () => {
               "smtpHost",
               "smtpPort",
               "smtpSsl",
+              "smtpTls",
               "smtpAuth",
               "ultimoUsoSucesso",
             ]}
@@ -106,6 +108,7 @@ const ConfiguracaoEmailPage = () => {
               return {
                 ...configuracao,
                 smtpSsl: configuracao.smtpSsl ? "Sim" : "Não",
+                smtpTls: configuracao.smtpTls ? "Sim" : "Não",
                 smtpAuth: configuracao.smtpAuth ? "Sim" : "Não",
                 ultimoUsoSucesso: configuracao.ultimoUsoSucesso
                   ? moment(configuracao.ultimoUsoSucesso).format("L")

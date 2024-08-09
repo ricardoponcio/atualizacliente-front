@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useApiConfiguracaoEmail } from "api";
+import FlexList from "components/form/FlexList";
 import React, { useEffect, useState } from "react";
+import CheckBox from "../../form/Checkbox";
 import Form from "../../form/Form";
 import Input from "../../form/Input";
-import CheckBox from "../../form/Checkbox";
 
 const AtualizaConfiguracaoEmail = ({
   configuracaoEmail,
@@ -13,9 +14,8 @@ const AtualizaConfiguracaoEmail = ({
   const [smtpHost, setsmtpHost] = useState("");
   const [smtpPort, setsmtpPort] = useState(0);
   const [smtpSsl, setsmtpSsl] = useState(false);
+  const [smtpTls, setsmtpTls] = useState(false);
   const [smtpAuth, setsmtpAuth] = useState(false);
-  const [smtpUser, setsmtpUser] = useState("");
-  const [smtpPassword, setsmtpPassword] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [requisicaoErro, setRequisicaoErro] = useState("");
 
@@ -27,18 +27,16 @@ const AtualizaConfiguracaoEmail = ({
     setsmtpHost(configuracaoEmail.smtpHost || "");
     setsmtpPort(configuracaoEmail.smtpPort || 0);
     setsmtpSsl(configuracaoEmail.smtpSsl || false);
+    setsmtpTls(configuracaoEmail.smtpTls || false);
     setsmtpAuth(configuracaoEmail.smtpAuth || false);
-    setsmtpUser(configuracaoEmail.smtpUser || "");
-    setsmtpPassword(configuracaoEmail.smtpPassword || "");
   };
 
   const limparFormulario = () => {
     setsmtpHost("");
     setsmtpPort(0);
     setsmtpSsl(false);
+    setsmtpTls(false);
     setsmtpAuth(false);
-    setsmtpUser("");
-    setsmtpPassword("");
   };
 
   const onSubmitForm = async (event) => {
@@ -52,9 +50,8 @@ const AtualizaConfiguracaoEmail = ({
           smtpHost,
           smtpPort,
           smtpSsl,
+          smtpTls,
           smtpAuth,
-          smtpUser,
-          smtpPassword,
         }
       );
       callbackConfiguracaoAtualizada(configuracaoAtualizada.data);
@@ -72,36 +69,32 @@ const AtualizaConfiguracaoEmail = ({
   return (
     <>
       <Form submitText="Atualizar" onSubmit={onSubmitForm}>
-        <Input
-          type="text"
-          placeholder="Endereço SMTP"
-          value={smtpHost}
-          onChange={setsmtpHost}
-        />
-        <Input
-          type="number"
-          placeholder="Porta SMTP"
-          value={smtpPort}
-          onChange={setsmtpPort}
-        />
-        <CheckBox label="Usa SSL" value={smtpSsl} onChange={setsmtpSsl} />
-        <CheckBox
-          label="Autenticação"
-          value={smtpAuth}
-          onChange={setsmtpAuth}
-        />
-        <Input
-          type="text"
-          placeholder="Usuário SMTP"
-          value={smtpUser}
-          onChange={setsmtpUser}
-        />
-        <Input
-          type="password"
-          placeholder="Senha SMTP"
-          value={smtpPassword}
-          onChange={setsmtpPassword}
-        />
+        <FlexList labelValuePairs={true}>
+          <label>Endereço SMTP</label>
+          <Input
+            type="text"
+            placeholder="DNS ou IP"
+            value={smtpHost}
+            onChange={setsmtpHost}
+          />
+          <label>Porta SMTP</label>
+          <Input
+            type="number"
+            placeholder="Ex.: 25, 487, ..."
+            value={smtpPort}
+            onChange={setsmtpPort}
+          />
+          <CheckBox label="Usa SSL" value={smtpSsl} onChange={setsmtpSsl} />
+          <CheckBox label="Usa TLS" value={smtpTls} onChange={setsmtpTls} />
+          <CheckBox
+            label="Autenticação"
+            value={smtpAuth}
+            onChange={setsmtpAuth}
+          />
+        </FlexList>
+        <h4>
+          <i>Para alterar usuário e/ou senha, remova o registro e recrie</i>
+        </h4>
         {carregando && <span>Carregando...</span>}
         {requisicaoErro && <span>{requisicaoErro}</span>}
       </Form>

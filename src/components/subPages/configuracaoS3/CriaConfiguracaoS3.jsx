@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useApiConfiguracaoS3 } from "api";
+import FlexList from "components/form/FlexList";
 import React, { useEffect, useState } from "react";
 import Form from "../../form/Form";
 import Input from "../../form/Input";
@@ -39,7 +40,7 @@ const CriaConfiguracaoS3 = ({ callbackConfiguracaoCriada = () => {} }) => {
         s3AccessKey,
         s3SecretKey,
         prefixoBase,
-        s3BucketName
+        s3BucketName,
       });
       callbackConfiguracaoCriada(configuracaoCriada.data);
       limparFormulario();
@@ -56,42 +57,50 @@ const CriaConfiguracaoS3 = ({ callbackConfiguracaoCriada = () => {} }) => {
   return (
     <>
       <Form submitText="Criar configuração de S3" onSubmit={onSubmitForm}>
-        <Input
-          type="text"
-          placeholder="Endereço do serviço"
-          value={s3ServiceEndpoint}
-          onChange={setS3ServiceEndpoint}
-        />
-        <Input
-          type="text"
-          placeholder="Região"
-          value={s3Region}
-          onChange={setS3Region}
-        />
-        <Input
-          type="text"
-          placeholder="Chave de Acesso"
-          value={s3AccessKey}
-          onChange={setS3AccessKey}
-        />
-        <Input
-          type="password"
-          placeholder="Chave Secreta"
-          value={s3SecretKey}
-          onChange={setS3SecretKey}
-        />
-        <Input
-          type="text"
-          placeholder="Nome do Bucket"
-          value={s3BucketName}
-          onChange={setS3BucketName}
-        />
-        <Input
-          type="text"
-          placeholder="Prefixo base"
-          value={prefixoBase}
-          onChange={setPrefixoBase}
-        />
+        <FlexList labelValuePairs={true}>
+          <label>Endereço do Serviço</label>
+          <Input
+            type="text"
+            placeholder="s3.amazonaws.com"
+            value={s3ServiceEndpoint}
+            onChange={setS3ServiceEndpoint}
+          />
+          <label>Região</label>
+          <Input
+            type="text"
+            placeholder="us-west-2"
+            value={s3Region}
+            onChange={setS3Region}
+          />
+          <label>Chave de Acesso</label>
+          <Input
+            type="text"
+            placeholder="AccessKey"
+            value={s3AccessKey}
+            onChange={setS3AccessKey}
+          />
+          <label>Chave Secreta</label>
+          <Input
+            type="password"
+            placeholder="Secret Key"
+            value={s3SecretKey}
+            onChange={setS3SecretKey}
+          />
+          <label>Nome do Bucket</label>
+          <Input
+            type="text"
+            placeholder="Nome do bucket"
+            value={s3BucketName}
+            onChange={setS3BucketName}
+          />
+          <label>Prefixo Base</label>
+          <Input
+            type="text"
+            placeholder="Ex.: /, /arquivos, /atualizacliente, ..."
+            value={prefixoBase}
+            onChange={setPrefixoBase}
+          />
+        </FlexList>
         {carregando && <span>Carregando...</span>}
         {requisicaoErro && <span>{requisicaoErro}</span>}
       </Form>

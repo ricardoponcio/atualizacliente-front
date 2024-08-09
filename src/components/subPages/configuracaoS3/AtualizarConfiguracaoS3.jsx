@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useApiConfiguracaoS3 } from "api";
+import FlexList from "components/form/FlexList";
 import React, { useEffect, useState } from "react";
 import Form from "../../form/Form";
 import Input from "../../form/Input";
@@ -11,8 +12,6 @@ const AtualizaConfiguracaoS3 = ({
   const { atualizaConfiguracao } = useApiConfiguracaoS3();
   const [s3ServiceEndpoint, setS3ServiceEndpoint] = useState("");
   const [s3Region, setS3Region] = useState("");
-  const [s3AccessKey, setS3AccessKey] = useState("");
-  const [s3SecretKey, setS3SecretKey] = useState("");
   const [s3BucketName, setS3BucketName] = useState("");
   const [prefixoBase, setPrefixoBase] = useState("");
   const [carregando, setCarregando] = useState(false);
@@ -25,8 +24,6 @@ const AtualizaConfiguracaoS3 = ({
     limparFormulario();
     setS3ServiceEndpoint(configuracaoS3.s3ServiceEndpoint || "");
     setS3Region(configuracaoS3.s3Region || "");
-    setS3AccessKey(configuracaoS3.s3AccessKey || "");
-    setS3SecretKey(configuracaoS3.s3SecretKey || "");
     setS3BucketName(configuracaoS3.s3BucketName || "");
     setPrefixoBase(configuracaoS3.prefixoBase || "");
   };
@@ -34,8 +31,6 @@ const AtualizaConfiguracaoS3 = ({
   const limparFormulario = () => {
     setS3ServiceEndpoint("");
     setS3Region("");
-    setS3AccessKey("");
-    setS3SecretKey("");
     setS3BucketName("");
     setPrefixoBase("");
   };
@@ -50,8 +45,6 @@ const AtualizaConfiguracaoS3 = ({
         {
           s3ServiceEndpoint,
           s3Region,
-          s3AccessKey,
-          s3SecretKey,
           s3BucketName,
           prefixoBase,
         }
@@ -71,42 +64,39 @@ const AtualizaConfiguracaoS3 = ({
   return (
     <>
       <Form submitText="Atualizar configuração de S3" onSubmit={onSubmitForm}>
-        <Input
-          type="text"
-          placeholder="Endereço do serviço"
-          value={s3ServiceEndpoint}
-          onChange={setS3ServiceEndpoint}
-        />
-        <Input
-          type="text"
-          placeholder="Região"
-          value={s3Region}
-          onChange={setS3Region}
-        />
-        <Input
-          type="text"
-          placeholder="Chave de Acesso"
-          value={s3AccessKey}
-          onChange={setS3AccessKey}
-        />
-        <Input
-          type="password"
-          placeholder="Chave Secreta"
-          value={s3SecretKey}
-          onChange={setS3SecretKey}
-        />
-        <Input
-          type="text"
-          placeholder="Nome do Bucket"
-          value={s3BucketName}
-          onChange={setS3BucketName}
-        />
-        <Input
-          type="text"
-          placeholder="Prefixo base"
-          value={prefixoBase}
-          onChange={setPrefixoBase}
-        />
+        <FlexList labelValuePairs={true}>
+          <label>Endereço do Serviço</label>
+          <Input
+            type="text"
+            placeholder="s3.amazonaws.com"
+            value={s3ServiceEndpoint}
+            onChange={setS3ServiceEndpoint}
+          />
+          <label>Região</label>
+          <Input
+            type="text"
+            placeholder="us-west-2"
+            value={s3Region}
+            onChange={setS3Region}
+          />
+          <label>Nome do Bucket</label>
+          <Input
+            type="text"
+            placeholder="Nome do bucket"
+            value={s3BucketName}
+            onChange={setS3BucketName}
+          />
+          <label>Prefixo Base</label>
+          <Input
+            type="text"
+            placeholder="Ex.: /, /arquivos, /atualizacliente, ..."
+            value={prefixoBase}
+            onChange={setPrefixoBase}
+          />
+        </FlexList>
+        <h4>
+          <i>Para alterar usuário e/ou senha, remova o registro e recrie</i>
+        </h4>
         {carregando && <span>Carregando...</span>}
         {requisicaoErro && <span>{requisicaoErro}</span>}
       </Form>
