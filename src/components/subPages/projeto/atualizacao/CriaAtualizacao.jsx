@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types */
 import { useApiProjetos } from "api";
+import Badge from "components/form/Badge";
 import FlexList from "components/form/FlexList";
 import HtmlEditor from "components/form/HtmlEditor";
+import InputFile from "components/form/InputFile";
 import React, { useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { translateStatus, translateSubStatus } from "utils/projetoUtils";
 import Box from "../../../form/Box";
 import Form from "../../../form/Form";
 import Select from "../../../form/Select";
+import "./CriaAtualizacao.scss";
 
 const CriaAtualizacao = ({
   projeto,
@@ -66,14 +69,15 @@ const CriaAtualizacao = ({
     }
   };
 
-  const handleChangeAnexo = (event) => {
-    setAnexo(event.target.files[0]);
-  };
-
   useEffect(
     () => setAnexos((anexos) => [...anexos, anexo].filter((anexo) => !!anexo)),
     [anexo]
   );
+  useEffect(() => setAnexo(""), [anexos]);
+
+  const removeAnexo = (idxRemover) => {
+    setAnexos((anexos) => anexos.filter((_, idx) => idx !== idxRemover));
+  };
 
   return (
     <>
@@ -98,13 +102,21 @@ const CriaAtualizacao = ({
         </Box>
         <HtmlEditor valor={descricao} onChange={setDescricao} />
         <FlexList>
-          <input type="file" onChange={handleChangeAnexo} multiple={false} />
+          <Box fixedWidth={100}>
+            <InputFile value="Inserir Anexo" onSelectFile={setAnexo} />
+          </Box>
           {anexos.length > 0 && (
             <FlexList rowDirection={true}>
               {anexos.map((anexo, idx) => (
-                <div key={`anexo_${idx}`}>
+                <FlexList key={`anexo_${idx}`} rowDirection={true}>
+                  <Badge
+                    value="X"
+                    color={"red"}
+                    clickable
+                    onClick={() => removeAnexo(idx)}
+                  />
                   <span>{anexo.name}</span>
-                </div>
+                </FlexList>
               ))}
             </FlexList>
           )}

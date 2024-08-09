@@ -1,0 +1,22 @@
+.anexo-item {
+  border: solid 1px gray;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  & .arquivo-item-nome {
+    font-size: 1.1rem;
+    font-weight: bold;
+    width: auto;
+  }
+  & .arquivo-item-tamanho {
+    font-size: 1.1rem;
+    color: gray;
+  }
+  & .arquivo-item-origem {
+    font-size: 1.1rem;
+    color: gray;
+  }
+}

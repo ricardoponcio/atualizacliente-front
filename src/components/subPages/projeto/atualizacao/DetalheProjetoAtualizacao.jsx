@@ -5,6 +5,7 @@ import Input from "../../../form/Input";
 import moment from "moment-timezone";
 import "react-datepicker/dist/react-datepicker.css";
 import FlexList from "../../../form/FlexList";
+import InfoAnexoProjeto from "../InfoAnexoProjeto";
 import InfoProjetoAtualizacao from "./InfoProjetoAtualizacao";
 
 const DetalheProjetoAtualizacao = ({ atualizacao }) => {
@@ -56,6 +57,8 @@ const DetalheProjetoAtualizacao = ({ atualizacao }) => {
             </>
           )}
       </FlexList>
+      <h3>Anexos</h3>
+      <InfoAnexoProjeto anexos={atualizacao.anexos} />
     </>
   );
 };

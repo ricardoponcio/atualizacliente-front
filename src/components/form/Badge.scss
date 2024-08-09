@@ -1,0 +1,18 @@
+.my-custom-badge {
+    border: 1px solid black;
+    padding: 4px;
+    padding-inline: 6px;
+    border-radius: 12px;
+    display: inline-flex;
+    width: auto;
+    height: auto;
+
+    & span {
+        font-size: .65rem;
+        color: black;
+    }
+
+    &.clickable {
+        cursor: pointer;
+    }
+}

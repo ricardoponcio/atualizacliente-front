@@ -4,6 +4,7 @@ import Form from "components/form/Form";
 import Input from "components/form/Input";
 import Loader from "components/form/Loader";
 import InfoProjetoAtualizacao from "components/subPages/projeto/atualizacao/InfoProjetoAtualizacao";
+import InfoAnexoProjeto from "components/subPages/projeto/InfoAnexoProjeto";
 import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -70,6 +71,7 @@ const ConsultaAtualizacao = () => {
               />
             </FlexList>
             <InfoProjetoAtualizacao atualizacao={atualizacao} />
+            <InfoAnexoProjeto anexos={atualizacao.anexos} />
           </FlexList>
         </div>
       )}
