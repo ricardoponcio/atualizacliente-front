@@ -32,7 +32,7 @@ const CriaCliente = ({ callbackClienteCriado = () => {} }) => {
       const clienteCriado = await criaCliente({
         razaoSocial,
         nomeFantasia,
-        cnpj,
+        cnpj: cnpj.replace(/\/|-|\./g, ''),
         email,
       });
       callbackClienteCriado(clienteCriado.data);
