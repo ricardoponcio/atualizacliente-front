@@ -1,0 +1,36 @@
+.boxes {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+
+  & .box {
+    border: solid 1px gray;
+    border-radius: 12px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    gap: 4px;
+    
+    &.clickable {
+      cursor: pointer;
+    }
+
+    & .box-value {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    & .box-title {
+      font-size: 1rem;
+      color: gray;
+    }
+    & .box-subTitle {
+      font-size: 0.85rem;
+      color: gray;
+    }
+    & .box-error {
+      font-size: 1rem;
+    }
+  }
+}

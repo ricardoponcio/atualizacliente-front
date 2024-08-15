@@ -23,7 +23,8 @@ export const useApiProjetos = () => {
   };
 
   return {
-    listarProjetos: () => api.get("/projetos/listar"),
+    listarProjetos: (params) => api.get("/projetos/listar", { params }),
+    estatisticasProjetos: () => api.get("/projetos/estatisticas"),
     detalharProjeto: (id) => api.get(`/projetos/${id}/detalhe`),
     criaProjeto: (projeto) => api.put("/projetos/criar", projeto),
     atualizaProjeto: (id, projeto) =>

@@ -5,5 +5,6 @@ export const useApiEnvioEmail = () => {
 
   return {
     ultimosEmails: () => api.get("/envio-email/ultimos"),
+    statusEmails: () => api.get("/envio-email/status"),
   };
 };
