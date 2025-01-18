@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import Cookies from "js-cookie";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApiAuth } from "../api";
 
@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [company, setCompany] = useState();
+  const refEnableOldPageNavigate = useRef(false);
   const { login: loginRequest, logout: logoutRequest } = useApiAuth();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     if (managedCompany) setCompany(JSON.parse(managedCompany));
 
     const olderPage = localStorage.getItem("current_page");
-    if (olderPage) navigate(olderPage);
+    if (olderPage && refEnableOldPageNavigate.current) navigate(olderPage);
   }, []);
 
   const login = async (email, password) => {

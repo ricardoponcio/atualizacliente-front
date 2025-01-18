@@ -23,7 +23,6 @@ const App = () => {
       "current_page",
       `${location.pathname}${location.search}`
     );
-    console.log(location);
   }, [location]);
 
   return (

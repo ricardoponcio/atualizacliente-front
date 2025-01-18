@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useAuth } from "context/authContext";
+import { useControlledApp } from "context/controlContext";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SideBarMenu.scss";
@@ -7,7 +8,8 @@ import Button from "./form/Button";
 
 const SideBarMenu = ({ children, menus }) => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { unmanageCompany } = useControlledApp();
+  const { user, company, logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const currentPath = window.location.pathname;
 
@@ -27,6 +29,11 @@ const SideBarMenu = ({ children, menus }) => {
             <span>Hello</span>
             <span>{user.name}</span>
           </div>
+          <div className="control">
+            <span>Managing {company.name}</span>
+            <Button value={"Change"} onClick={() => unmanageCompany()} />
+          </div>
+          <hr />
           <ul className="sidebar-menus-list">
             {menus.map(({ title, url }, idx) => (
               <Button

@@ -1,19 +1,19 @@
+import { useApiCompany } from "api";
 import Button from "components/form/Button";
 import Loader from "components/form/Loader";
-import { useAuth } from "context/authContext"; // Assuming you've already created this context
-import React, { useEffect, useState } from "react";
-import { redirect } from "react-router-dom";
-import { useApiCompany } from "api";
-import "./ManageCompany.scss";
 import Select from "components/form/Select";
+import { useAuth } from "context/authContext";
 import { useControlledApp } from "context/controlContext";
+import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import "./ManageCompany.scss";
 
 const ManageCompanyPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [company, setCompany] = useState("");
+  const [companyChoose, setCompanyChoose] = useState("");
   const [companies, setCompanies] = useState([]);
   const [error, setError] = useState("");
-  const { user } = useAuth();
+  const { company } = useAuth();
   const { managedCompany } = useControlledApp();
   const { list: listCompaniesRequest } = useApiCompany();
 
@@ -23,8 +23,7 @@ const ManageCompanyPage = () => {
     try {
       // Validate user credentials and perform login logic
       // For simplicity, let's assume successful login sets isLoggedIn to true
-      await managedCompany(company.id); // Update with actual login logic
-      redirect("/");
+      await managedCompany(JSON.parse(companyChoose)); // Update with actual login logic
     } catch (err) {
       setError("There is a problem selecting the company...");
     } finally {
@@ -40,28 +39,35 @@ const ManageCompanyPage = () => {
     setIsLoading(true);
     setError("");
     try {
-      setCompanies((await listCompaniesRequest()).data);
+      const companiesRequest = await listCompaniesRequest();
+      setCompanies(companiesRequest.data);
     } catch (err) {
+      console.error(err);
       setError(
-        err.response?.data?.mensagem ||
-          "Error while loading list of companies"
+        err.response?.data?.mensagem || "Error while loading list of companies"
       );
     } finally {
       setIsLoading(false);
     }
   };
 
+  if (company) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div className="manage-company-wrapper">
       <div className="manage-company-container">
         <h1>ClothAI</h1>
-        <h6>Hello {user.name}</h6>
+        <span>Choose a company to manage</span>
         <Select
-          value={company}
+          value={companyChoose}
           placeholder="Select a company to manage"
-          onChange={setCompany}
+          onChange={setCompanyChoose}
           firstOptionValue="Select..."
           options={companies}
+          selectOptionLabelFactory={(company) => company.name}
+          selectOptionValueFactory={(company) => JSON.stringify(company)}
         />
         {isLoading && <Loader />}
         {error && <span>{error}</span>}

@@ -10,14 +10,19 @@ export const ControlProvider = ({ children }) => {
   const { setCompanyData } = useAuth();
   const { manage: manageRequest } = useApiCompany();
 
-  const managedCompany = async (id) => {
-    const { data } = await manageRequest(id);
-    setCompanyData(data);
-    Cookies.set("company", JSON.stringify(data));
+  const managedCompany = async (company) => {
+    await manageRequest(company.id);
+    setCompanyData(company);
+    Cookies.set("company", JSON.stringify(company));
+  };
+
+  const unmanageCompany = () => {
+    setCompanyData(null);
+    Cookies.remove("company");
   };
 
   return (
-    <ControlContext.Provider value={{ managedCompany }}>
+    <ControlContext.Provider value={{ managedCompany, unmanageCompany }}>
       {children}
     </ControlContext.Provider>
   );
