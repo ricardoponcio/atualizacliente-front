@@ -78,23 +78,6 @@ $transition-time: 0.5s;
             }
         }
 
-        & .control {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            
-            &>*{
-                color: gray;
-            }
-        }
-
-        & hr {
-            border: none;
-            border-bottom: solid 1px lightgray;
-            margin: 0;
-            padding: 0;
-        }
-
         & .sidebar-menus-list {
             list-style: none;
             padding: 0;

@@ -1,4 +1,4 @@
-.manage-company-wrapper {
+.setup-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,20 +6,21 @@
     height: 100%;
 }
 
-.manage-company-container {
+.setup-container {
     display: flex;
     flex-direction: column;
     gap: 8px;
     width: 300px;
 }
 
-.manage-company-wrapper .manage-company-container {
+.setup-wrapper .setup-container {
 
-    &>* {
+    & * {
+        display: inline;
         width: 100%;
     }
 
-    &>h1 {
+    & h1 {
         font-style: normal;
         text-align: center;
     }

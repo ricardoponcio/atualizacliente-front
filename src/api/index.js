@@ -1,5 +1,8 @@
-export { useApiStorage } from "./collections/storage";
-export { useApiCompany } from "./collections/company";
-export { useApiClothResource } from "./collections/clothResource";
-export { useApiAuth } from "./collections/login";
-export { useApiLoggedUser } from "./collections/loggedUser";
+export { useApiCliente } from "./clientes";
+export { useApiConfiguracaoEmail } from "./configuracaoEmail";
+export { useApiConfiguracaoS3 } from "./configuracaoS3";
+export { useApiEnvioEmail } from "./envioEmail";
+export { useApiAuth } from "./login";
+export { useApiProjetos } from "./projetos";
+export { useApiSetup } from "./setup";
+export { useApiUsuario } from "./usuario";

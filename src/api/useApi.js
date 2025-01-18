@@ -3,8 +3,7 @@ import { useAuth } from "../context/authContext";
 
 const createApi = () => {
   return axios.create({
-    // baseURL: "https://api.clothai.poncio.dev",
-    baseURL: "http://localhost:4049/api",
+    baseURL: "http://localhost:8080",
     timeout: 5000,
     withCredentials: true,
   });
