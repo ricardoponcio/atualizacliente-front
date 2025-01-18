@@ -24,17 +24,17 @@ const SideBarMenu = ({ children, menus }) => {
         </div>
         <div className="sidebar-container">
           <div className="greeting">
-            <span>Olá</span>
-            <span>{user.nome}</span>
+            <span>Hello</span>
+            <span>{user.name}</span>
           </div>
           <ul className="sidebar-menus-list">
-            {menus.map(({ titulo, url }, idx) => (
+            {menus.map(({ title, url }, idx) => (
               <Button
                 activeState={url === currentPath}
                 className="sidebar-menus-item"
                 key={`menu_${idx}`}
                 onClick={() => navigate(url)}
-                value={titulo}
+                value={title}
               />
             ))}
           </ul>

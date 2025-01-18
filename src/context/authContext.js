@@ -9,34 +9,40 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState();
+  const [company, setCompany] = useState();
   const { login: loginRequest, logout: logoutRequest } = useApiAuth();
 
   useEffect(() => {
     const loggedUser = Cookies.get("user");
     if (loggedUser) setUser(JSON.parse(loggedUser));
 
+    const managedCompany = Cookies.get("company");
+    if (managedCompany) setCompany(JSON.parse(managedCompany));
+
     const olderPage = localStorage.getItem("current_page");
     if (olderPage) navigate(olderPage);
   }, []);
 
-  const login = async (usuario, senha) => {
-    const { data: usuarioLogado } = await loginRequest(usuario, senha);
-    setUser(usuarioLogado);
-    Cookies.set("user", JSON.stringify(usuarioLogado));
+  const login = async (email, password) => {
+    const { data } = await loginRequest({ email, password });
+    setUser(data);
+    Cookies.set("user", JSON.stringify(data));
   };
 
   const logout = async () => {
     try {
       await logoutRequest();
-    } catch(err) {
+    } catch (err) {
       // We don't care about 401 errors in logout
     }
     setUser(undefined);
     Cookies.remove("user");
   };
 
+  const setCompanyData = (company) => setCompany(company);
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, company, login, logout, setCompanyData }}>
       {children}
     </AuthContext.Provider>
   );

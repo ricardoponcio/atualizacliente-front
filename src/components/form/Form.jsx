@@ -6,8 +6,9 @@ import "./Form.scss";
 const Form = ({
   children,
   autoWidth = false,
-  submitText = "Submeter",
+  submitText = "Submit",
   onSubmit = () => {},
+  loading = false,
 }) => {
   return (
     <form
@@ -15,7 +16,7 @@ const Form = ({
       onSubmit={onSubmit}
     >
       {children}
-      <Button value={submitText} type="submit" />
+      <Button value={submitText} type="submit" disabled={loading} />
     </form>
   );
 };
