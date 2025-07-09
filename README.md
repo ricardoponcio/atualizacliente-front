@@ -71,7 +71,7 @@ This repository contains the frontend for the AtualizaCliente platform. It provi
 
 ## Notes
 
-- This frontend is designed to work with the [AtualizaCliente API](../atualizacliente-api).
-- For usage details and payload examples, see the backend documentation or the main project README.
+- This frontend is designed to work with the AtualizaCliente API.
+- For usage details and payload examples, see the backend documentation or the [main project README](https://github.com/ricardoponcio/atualizacliente).
 
 ---
